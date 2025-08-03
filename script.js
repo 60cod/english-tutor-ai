@@ -4,8 +4,15 @@ class EnglishChatbot {
         this.userInput = document.getElementById('user-input');
         this.sendBtn = document.getElementById('send-btn');
         this.loading = document.getElementById('loading');
+        this.increaseFontBtn = document.getElementById('increase-font');
+        this.decreaseFontBtn = document.getElementById('decrease-font');
+        this.fontSizeDisplay = document.getElementById('font-size-display');
+        
+        this.fontSize = 14;
         
         this.initEventListeners();
+        this.updateFontSize();
+        this.setInitialTimestamp();
     }
     
     initEventListeners() {
@@ -16,6 +23,8 @@ class EnglishChatbot {
                 this.sendMessage();
             }
         });
+        this.increaseFontBtn.addEventListener('click', () => this.increaseFontSize());
+        this.decreaseFontBtn.addEventListener('click', () => this.decreaseFontSize());
     }
     
     async sendMessage() {
@@ -72,11 +81,13 @@ class EnglishChatbot {
     }
     
     addUserMessage(message) {
+        const timestamp = new Date().toLocaleTimeString();
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.innerHTML = `
             <div class="message-content">
                 <p>${this.escapeHtml(message)}</p>
+                <div class="message-timestamp">${timestamp}</div>
             </div>
         `;
         this.chatMessages.appendChild(messageDiv);
@@ -84,6 +95,7 @@ class EnglishChatbot {
     }
     
     addBotMessage(response) {
+        const timestamp = new Date().toLocaleTimeString();
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
         
@@ -119,6 +131,7 @@ class EnglishChatbot {
             <div class="message-content">
                 <p>${this.escapeHtml(response.response)}</p>
                 ${feedbackHtml}
+                <div class="message-timestamp">${timestamp}</div>
             </div>
         `;
         
@@ -134,6 +147,39 @@ class EnglishChatbot {
     
     scrollToBottom() {
         this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+    
+    increaseFontSize() {
+        if (this.fontSize < 24) {
+            this.fontSize += 2;
+            this.updateFontSize();
+        }
+    }
+    
+    decreaseFontSize() {
+        if (this.fontSize > 10) {
+            this.fontSize -= 2;
+            this.updateFontSize();
+        }
+    }
+    
+    updateFontSize() {
+        // Update chat messages font size
+        this.chatMessages.style.fontSize = `${this.fontSize}px`;
+        
+        // Update display
+        this.fontSizeDisplay.textContent = `${this.fontSize}px`;
+        
+        // Update button states
+        this.increaseFontBtn.disabled = this.fontSize >= 24;
+        this.decreaseFontBtn.disabled = this.fontSize <= 10;
+    }
+    
+    setInitialTimestamp() {
+        const initialTimestamp = document.getElementById('initial-timestamp');
+        if (initialTimestamp) {
+            initialTimestamp.textContent = new Date().toLocaleTimeString();
+        }
     }
     
     escapeHtml(text) {
