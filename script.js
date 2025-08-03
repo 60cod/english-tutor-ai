@@ -109,7 +109,7 @@ class EnglishChatbot {
                         ${response.corrections.map((correction, idx) => 
                             `<div class="feedback-item">
                                 <span class="feedback-text">• ${this.escapeHtml(correction)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correction).replace(/'/g, '\\\'')}')" title="Copy to clipboard">
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correction).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy!">
                                     📋
                                 </button>
                             </div>`
@@ -127,7 +127,7 @@ class EnglishChatbot {
                         ${response.suggestions.map((suggestion, idx) => 
                             `<div class="feedback-item">
                                 <span class="feedback-text">• ${this.escapeHtml(suggestion)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestion).replace(/'/g, '\\\'')}')" title="Copy to clipboard">
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestion).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy to clipboard">
                                     📋
                                 </button>
                             </div>`
@@ -192,17 +192,16 @@ class EnglishChatbot {
         }
     }
     
-    async copyToClipboard(text) {
+    async copyToClipboard(text, buttonElement) {
         try {
             await navigator.clipboard.writeText(text);
             // Show temporary feedback
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = '✓';
-            button.style.background = '#28a745';
+            const originalText = buttonElement.textContent;
+            buttonElement.textContent = '✓';
+            buttonElement.style.background = '#28a745';
             setTimeout(() => {
-                button.textContent = originalText;
-                button.style.background = '';
+                buttonElement.textContent = originalText;
+                buttonElement.style.background = '';
             }, 1500);
         } catch (err) {
             console.error('Failed to copy text: ', err);
