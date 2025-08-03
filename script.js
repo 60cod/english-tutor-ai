@@ -81,7 +81,7 @@ class EnglishChatbot {
     }
     
     addUserMessage(message) {
-        const timestamp = new Date().toLocaleTimeString();
+        const timestamp = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.innerHTML = `
@@ -95,7 +95,7 @@ class EnglishChatbot {
     }
     
     addBotMessage(response) {
-        const timestamp = new Date().toLocaleTimeString();
+        const timestamp = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
         
@@ -105,11 +105,16 @@ class EnglishChatbot {
             feedbackHtml += `
                 <div class="feedback-section correction">
                     <div class="feedback-title">✏️ Corrections</div>
-                    <ul class="feedback-list">
-                        ${response.corrections.map(correction => 
-                            `<li>${this.escapeHtml(correction)}</li>`
+                    <div class="feedback-list">
+                        ${response.corrections.map((correction, idx) => 
+                            `<div class="feedback-item">
+                                <span class="feedback-text">• ${this.escapeHtml(correction)}</span>
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correction).replace(/'/g, '\\\'')}')" title="Copy to clipboard">
+                                    📋
+                                </button>
+                            </div>`
                         ).join('')}
-                    </ul>
+                    </div>
                 </div>
             `;
         }
@@ -118,11 +123,16 @@ class EnglishChatbot {
             feedbackHtml += `
                 <div class="feedback-section suggestion">
                     <div class="feedback-title">💡 Better Expressions</div>
-                    <ul class="feedback-list">
-                        ${response.suggestions.map(suggestion => 
-                            `<li>${this.escapeHtml(suggestion)}</li>`
+                    <div class="feedback-list">
+                        ${response.suggestions.map((suggestion, idx) => 
+                            `<div class="feedback-item">
+                                <span class="feedback-text">• ${this.escapeHtml(suggestion)}</span>
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestion).replace(/'/g, '\\\'')}')" title="Copy to clipboard">
+                                    📋
+                                </button>
+                            </div>`
                         ).join('')}
-                    </ul>
+                    </div>
                 </div>
             `;
         }
@@ -178,7 +188,24 @@ class EnglishChatbot {
     setInitialTimestamp() {
         const initialTimestamp = document.getElementById('initial-timestamp');
         if (initialTimestamp) {
-            initialTimestamp.textContent = new Date().toLocaleTimeString();
+            initialTimestamp.textContent = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
+        }
+    }
+    
+    async copyToClipboard(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            // Show temporary feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✓';
+            button.style.background = '#28a745';
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 1500);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
         }
     }
     
@@ -190,6 +217,7 @@ class EnglishChatbot {
 }
 
 // Initialize the chatbot when the page loads
+let chatbot;
 document.addEventListener('DOMContentLoaded', () => {
-    new EnglishChatbot();
+    chatbot = new EnglishChatbot();
 });
