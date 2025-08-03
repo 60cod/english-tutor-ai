@@ -4,16 +4,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
   console.error("GEMINI_API_KEY environment variable is not set.");
-} else {
-  console.log("GEMINI_API_KEY is set, length:", GEMINI_API_KEY.length);
-  console.log("API key starts with:", GEMINI_API_KEY.substring(0, 10) + "...");
-  console.log("API key ends with:", "..." + GEMINI_API_KEY.substring(GEMINI_API_KEY.length - 5));
-  console.log("API key has whitespace?", /\s/.test(GEMINI_API_KEY));
-  console.log("API key trimmed length:", GEMINI_API_KEY.trim().length);
 }
 
-const cleanApiKey = GEMINI_API_KEY ? GEMINI_API_KEY.trim() : null;
-const genAI = new GoogleGenerativeAI(cleanApiKey);
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 exports.handler = async function(event, context) {
