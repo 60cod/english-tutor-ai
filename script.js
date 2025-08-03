@@ -198,7 +198,6 @@ class EnglishChatbot {
             // Show temporary feedback
             const originalText = buttonElement.textContent;
             buttonElement.textContent = '✓';
-            buttonElement.style.background = '#28a745';
             setTimeout(() => {
                 buttonElement.textContent = originalText;
                 buttonElement.style.background = '';
