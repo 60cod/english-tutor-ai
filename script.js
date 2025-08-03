@@ -81,7 +81,11 @@ class EnglishChatbot {
     }
     
     addUserMessage(message) {
-        const timestamp = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
+        const timestamp = new Date().toLocaleTimeString(undefined, {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.innerHTML = `
@@ -95,7 +99,11 @@ class EnglishChatbot {
     }
     
     addBotMessage(response) {
-        const timestamp = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
+        const timestamp = new Date().toLocaleTimeString(undefined, {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
         
@@ -188,7 +196,11 @@ class EnglishChatbot {
     setInitialTimestamp() {
         const initialTimestamp = document.getElementById('initial-timestamp');
         if (initialTimestamp) {
-            initialTimestamp.textContent = new Date().toLocaleTimeString().replace(/:\d{2}\s/, ' ');
+            initialTimestamp.textContent = new Date().toLocaleTimeString(undefined, {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
         }
     }
     
