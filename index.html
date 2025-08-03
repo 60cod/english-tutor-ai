@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Tutor AI - Smart English Learning</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 English Tutor AI</h1>
+            <p>Your personal AI tutor for English mastery</p>
+        </header>
+        
+        <div class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your English Tutor AI. Send me a message and I'll provide personalized feedback on your grammar, vocabulary, and expressions to help you improve! 🎓</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <textarea 
+                    id="user-input" 
+                    placeholder="Type your message in English..."
+                    rows="3"
+                ></textarea>
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Analyzing your message...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

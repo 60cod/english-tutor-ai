@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# IDE and editor files
+.idea/
+
+# IntelliJ IDEA specific
+shelf/
+workspace.xml
+
+# Build outputs
+dist/
+build/
+
+# Netlify (exclude cache and state, but keep functions)
+.netlify/state/
+.netlify/cache/
+.netlify/edge-functions-dist/
+
+# Local development
+.cache/

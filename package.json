@@ -1,0 +1,18 @@
+{
+  "name": "english-tutor-ai",
+  "version": "1.0.0",
+  "description": "AI-powered English tutor for conversation practice and grammar improvement",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step needed for static site'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": ["english", "ai-tutor", "gemini", "conversation", "grammar", "education"],
+  "author": "",
+  "license": "MIT"
+}
