@@ -47,6 +47,8 @@ class EnglishChatbot {
             });
         } finally {
             this.setLoading(false);
+            // 메시지 전송 완료 후 입력창에 다시 포커스
+            this.userInput.focus();
         }
     }
     
