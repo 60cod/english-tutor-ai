@@ -42,8 +42,21 @@ class EnglishChatbot {
     }
     
     async analyzeMessage(message) {
-        // This will call the Netlify function
-        const response = await fetch('/.netlify/functions/gemini', {
+        // 환경에 따라 다른 API URL 사용
+        let apiUrl;
+        
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // 로컬 개발 환경
+            apiUrl = '/.netlify/functions/gemini';
+        } else if (window.location.hostname.includes('netlify.app')) {
+            // Netlify 배포 환경
+            apiUrl = '/.netlify/functions/gemini';
+        } else {
+            // GitHub Pages 등 다른 환경에서는 Netlify 도메인 직접 호출
+            apiUrl = 'https://60-english-tutor-ai.netlify.app/.netlify/functions/gemini';
+        }
+        
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

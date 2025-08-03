@@ -8,11 +8,16 @@
     "build": "echo 'No build step needed for static site'",
     "deploy": "netlify deploy --prod"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@google/generative-ai": "^0.1.0"
+  },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
   },
   "keywords": ["english", "ai-tutor", "gemini", "conversation", "grammar", "education"],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  }
 }
