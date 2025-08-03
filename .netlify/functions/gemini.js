@@ -7,9 +7,13 @@ if (!GEMINI_API_KEY) {
 } else {
   console.log("GEMINI_API_KEY is set, length:", GEMINI_API_KEY.length);
   console.log("API key starts with:", GEMINI_API_KEY.substring(0, 10) + "...");
+  console.log("API key ends with:", "..." + GEMINI_API_KEY.substring(GEMINI_API_KEY.length - 5));
+  console.log("API key has whitespace?", /\s/.test(GEMINI_API_KEY));
+  console.log("API key trimmed length:", GEMINI_API_KEY.trim().length);
 }
 
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+const cleanApiKey = GEMINI_API_KEY ? GEMINI_API_KEY.trim() : null;
+const genAI = new GoogleGenerativeAI(cleanApiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 exports.handler = async function(event, context) {
@@ -66,7 +70,8 @@ Rules:
 - Use professional but friendly tone
 `;
 
-    const result = await model.generateContent(prompt);
+    const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+    const result = await model.generateContent({ contents: chatHistory });
     const response = await result.response;
     const text = response.text();
     
