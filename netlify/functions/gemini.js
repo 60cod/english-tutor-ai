@@ -46,8 +46,28 @@ exports.handler = async function(event, context) {
       };
     }
 
-    const prompt = `
-Analyze this English message: "${message}"
+    // 한글 감지
+    const isKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(message);
+    
+    const prompt = isKorean 
+      ? `한국어 메시지를 자연스러운 원어민 일상 영어로 번역하고 표현을 제안해주세요: "${message}"
+
+Return JSON format:
+{
+  "corrections": [],
+  "suggestions": ["natural native-like expression 1", "casual everyday expression 2", "alternative colloquial expression 3"],
+  "response": "brief encouraging response in English with a follow-up question"
+}
+
+Rules:
+- corrections: always empty array for Korean input
+- suggestions: provide 2-3 natural, native-like English expressions that sound conversational and authentic
+- Focus on how native speakers would actually say it in everyday casual situations
+- Avoid overly formal or textbook English - use colloquial, natural expressions
+- Include contractions and informal language where appropriate (like "I'm", "gonna", "wanna", etc.)
+- response: keep short, encouraging, ask follow-up question in English
+- Make it sound like something you'd hear in a casual conversation between friends`
+      : `Analyze this English message: "${message}"
 
 Return JSON format:
 {
@@ -60,8 +80,7 @@ Rules:
 - corrections: show corrected sentence with brief reason
 - suggestions: just the improved expression, no extra words
 - response: keep short, ask follow-up question
-- Use professional but friendly tone
-`;
+- Use professional but friendly tone`;
 
     const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
     const result = await model.generateContent({ contents: chatHistory });

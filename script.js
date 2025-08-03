@@ -114,14 +114,15 @@ class EnglishChatbot {
                 <div class="feedback-section correction">
                     <div class="feedback-title">✏️ Corrections</div>
                     <div class="feedback-list">
-                        ${response.corrections.map((correction, idx) => 
-                            `<div class="feedback-item">
-                                <span class="feedback-text">• ${this.escapeHtml(correction)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correction).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy!">
+                        ${response.corrections.map((correction, idx) => {
+                            const correctionText = typeof correction === 'string' ? correction : JSON.stringify(correction);
+                            return `<div class="feedback-item">
+                                <span class="feedback-text">• ${this.escapeHtml(correctionText)}</span>
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correctionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy!">
                                     📋
                                 </button>
-                            </div>`
-                        ).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
             `;
@@ -132,14 +133,15 @@ class EnglishChatbot {
                 <div class="feedback-section suggestion">
                     <div class="feedback-title">💡 Better Expressions</div>
                     <div class="feedback-list">
-                        ${response.suggestions.map((suggestion, idx) => 
-                            `<div class="feedback-item">
-                                <span class="feedback-text">• ${this.escapeHtml(suggestion)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestion).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy to clipboard">
+                        ${response.suggestions.map((suggestion, idx) => {
+                            const suggestionText = typeof suggestion === 'string' ? suggestion : JSON.stringify(suggestion);
+                            return `<div class="feedback-item">
+                                <span class="feedback-text">• ${this.escapeHtml(suggestionText)}</span>
+                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy to clipboard">
                                     📋
                                 </button>
-                            </div>`
-                        ).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
             `;
