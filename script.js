@@ -7,8 +7,11 @@ class EnglishChatbot {
         this.increaseFontBtn = document.getElementById('increase-font');
         this.decreaseFontBtn = document.getElementById('decrease-font');
         this.fontSizeDisplay = document.getElementById('font-size-display');
+        this.headerToggleBtn = document.getElementById('header-toggle');
+        this.header = document.querySelector('header');
         
         this.fontSize = 14;
+        this.hasUserSentMessage = false;
         
         this.initEventListeners();
         this.updateFontSize();
@@ -25,11 +28,18 @@ class EnglishChatbot {
         });
         this.increaseFontBtn.addEventListener('click', () => this.increaseFontSize());
         this.decreaseFontBtn.addEventListener('click', () => this.decreaseFontSize());
+        this.headerToggleBtn.addEventListener('click', () => this.toggleHeader());
     }
     
     async sendMessage() {
         const message = this.userInput.value.trim();
         if (!message) return;
+        
+        // 첫 메시지 전송 시 모바일에서 헤더 자동 축소
+        if (!this.hasUserSentMessage && window.innerWidth <= 768) {
+            this.hasUserSentMessage = true;
+            this.header.classList.add('collapsed');
+        }
         
         this.addUserMessage(message);
         this.userInput.value = '';
@@ -221,6 +231,10 @@ class EnglishChatbot {
         } catch (err) {
             console.error('Failed to copy text: ', err);
         }
+    }
+    
+    toggleHeader() {
+        this.header.classList.toggle('collapsed');
     }
     
     escapeHtml(text) {

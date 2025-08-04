@@ -40,9 +40,10 @@ header {
     margin-bottom: 10px;
 }
 
-.header-title p {
+.header-subtitle {
     opacity: 0.9;
     font-size: 1.1rem;
+    transition: all 0.3s ease;
 }
 
 .font-size-controls {
@@ -88,6 +89,47 @@ header {
     text-align: center;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-toggle-btn {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.header-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+header.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+header.collapsed .header-subtitle,
+header.collapsed .font-size-controls {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+header.collapsed {
+    padding: 15px 30px;
 }
 
 .chat-container {
@@ -311,10 +353,24 @@ header {
     .font-size-controls {
         position: static;
         margin-top: 10px;
+        transition: all 0.3s ease;
     }
     
     .header-title h1 {
         font-size: 1.5rem;
+    }
+    
+    .header-toggle-btn {
+        display: block;
+    }
+    
+    header.collapsed {
+        padding: 10px 20px;
+    }
+    
+    header.collapsed .header-title h1 {
+        font-size: 1.3rem;
+        margin-bottom: 0;
     }
     
     .chat-container {
