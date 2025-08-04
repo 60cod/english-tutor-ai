@@ -9,6 +9,7 @@ body {
     background: #f2f2f2;
     min-height: 100vh;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .container {
@@ -18,6 +19,9 @@ body {
     border-radius: 15px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -25,6 +29,8 @@ header {
     color: white;
     padding: 30px;
     position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
 }
 
 .header-top {
@@ -94,12 +100,12 @@ header {
 .header-toggle-btn {
     position: absolute;
     top: 10px;
-    left: 20px;
+    right: 20px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
     color: white;
-    padding: 8px 12px;
+    padding: 4px 8px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -133,9 +139,10 @@ header.collapsed {
 }
 
 .chat-container {
-    height: 700px;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .chat-messages {
@@ -253,6 +260,7 @@ header.collapsed {
     display: flex;
     gap: 15px;
     align-items: flex-end;
+    flex-shrink: 0;
 }
 
 #user-input {
@@ -330,6 +338,7 @@ header.collapsed {
     border-top: 1px solid #e0e0e0;
     font-size: 12px;
     color: #6c757d;
+    flex-shrink: 0;
 }
 
 .footer a {
@@ -344,6 +353,7 @@ header.collapsed {
     
     .container {
         border-radius: 10px;
+        height: calc(100vh - 20px);
     }
     
     header {
@@ -371,10 +381,6 @@ header.collapsed {
     header.collapsed .header-title h1 {
         font-size: 1.3rem;
         margin-bottom: 0;
-    }
-    
-    .chat-container {
-        height: 400px;
     }
 
     .message-content {
