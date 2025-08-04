@@ -55,15 +55,16 @@ header {
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 93px;
 }
 
 .font-btn {
     background: transparent;
     border: none;
     color: white;
-    padding: 8px 12px;
+    padding: 3px 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     transition: background-color 0.2s ease;
 }
@@ -78,7 +79,7 @@ header {
 }
 
 .font-size-display {
-    padding: 8px 12px;
+    padding: 4px 8px;
     background: rgba(255, 255, 255, 0.1);
     color: white;
     font-size: 12px;
@@ -221,6 +222,7 @@ header {
     font-size: 16px;
     font-family: inherit;
     transition: border-color 0.3s ease;
+    height: 80px;
 }
 
 #user-input:focus {
@@ -308,7 +310,7 @@ header {
     
     .font-size-controls {
         position: static;
-        margin-top: 15px;
+        margin-top: 10px;
     }
     
     .header-title h1 {
@@ -318,18 +320,27 @@ header {
     .chat-container {
         height: 400px;
     }
-    
+
     .message-content {
         max-width: 90%;
     }
-    
+
     .input-container {
         padding: 15px;
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
+        gap: 0;
+        width: 100%;
     }
-    
+
     #send-btn {
-        margin-top: 10px;
+        max-width: 45px;
+        padding: 10px 0;
+        flex: 1;
+        margin-left: 10px;
+        height: 45px;
+        font-size: 14px;
+        line-height: 14px;
+        border-radius: 13px;
     }
 }
