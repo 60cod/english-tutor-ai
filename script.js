@@ -9,13 +9,24 @@ class EnglishChatbot {
         this.fontSizeDisplay = document.getElementById('font-size-display');
         this.headerToggleBtn = document.getElementById('header-toggle');
         this.header = document.querySelector('header');
+        this.voiceBtn = document.getElementById('voice-btn');
         
         this.fontSize = 14;
         this.hasUserSentMessage = false;
         
+        // Voice-related properties
+        this.isVoiceMode = false;
+        this.recognition = null;
+        this.isListening = false;
+        this.speechSupported = this.checkSpeechSupport();
+        this.synthesis = window.speechSynthesis;
+        this.currentUtterance = null;
+        this.micPermissionGranted = false;
+        
         this.initEventListeners();
         this.updateFontSize();
         this.setInitialTimestamp();
+        this.initVoiceFeature();
     }
     
     initEventListeners() {
@@ -29,6 +40,10 @@ class EnglishChatbot {
         this.increaseFontBtn.addEventListener('click', () => this.increaseFontSize());
         this.decreaseFontBtn.addEventListener('click', () => this.decreaseFontSize());
         this.headerToggleBtn.addEventListener('click', () => this.toggleHeader());
+        
+        if (this.voiceBtn) {
+            this.voiceBtn.addEventListener('click', () => this.toggleVoiceMode());
+        }
     }
     
     async sendMessage() {
@@ -169,6 +184,11 @@ class EnglishChatbot {
         
         this.chatMessages.appendChild(messageDiv);
         this.scrollToBottom();
+        
+        // Speak the bot response if in voice mode
+        if (this.isVoiceMode) {
+            this.speakText(response.response);
+        }
     }
     
     setLoading(isLoading) {
@@ -241,6 +261,264 @@ class EnglishChatbot {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+    
+    // Voice-related methods
+    checkSpeechSupport() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SpeechSynthesis = window.speechSynthesis;
+        return !!(SpeechRecognition && SpeechSynthesis);
+    }
+    
+    initVoiceFeature() {
+        if (this.speechSupported) {
+            this.createVoiceButton();
+            this.initSpeechRecognition();
+        }
+    }
+    
+    createVoiceButton() {
+        if (!this.voiceBtn) return;
+        
+        if (this.speechSupported) {
+            this.voiceBtn.style.display = 'flex';
+        } else {
+            this.voiceBtn.classList.add('disabled');
+            this.voiceBtn.title = '브라우저에서 음성 기능을 지원하지 않습니다';
+        }
+    }
+    
+    toggleVoiceMode() {
+        if (!this.speechSupported) {
+            this.addSystemMessage('⚠️ Voice feature is not supported in this browser. Please use Chrome or Safari browser.');
+            return;
+        }
+        
+        this.isVoiceMode = !this.isVoiceMode;
+        
+        if (this.isVoiceMode) {
+            this.startVoiceMode();
+        } else {
+            this.stopVoiceMode();
+        }
+    }
+    
+    startVoiceMode() {
+        this.voiceBtn.classList.add('active');
+        this.voiceBtn.querySelector('.voice-icon').textContent = '🔴';
+        this.voiceBtn.title = '음성 모드 끄기';
+        
+        // Disable text input
+        this.userInput.disabled = true;
+        this.sendBtn.disabled = true;
+        this.userInput.placeholder = '음성 모드가 활성화되어 있습니다...';
+        
+        // Start listening
+        this.startListening();
+    }
+    
+    stopVoiceMode() {
+        this.voiceBtn.classList.remove('active');
+        this.voiceBtn.querySelector('.voice-icon').textContent = '🎙️';
+        this.voiceBtn.title = '음성 모드 켜기';
+        
+        // Enable text input
+        this.userInput.disabled = false;
+        this.sendBtn.disabled = false;
+        this.userInput.placeholder = 'Type your message in English...';
+        
+        // Stop listening if currently listening
+        if (this.isListening && this.recognition) {
+            this.recognition.stop();
+        }
+        
+        // Stop any ongoing speech
+        this.stopSpeaking();
+    }
+    
+    initSpeechRecognition() {
+        if (!this.speechSupported) return;
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        this.recognition = new SpeechRecognition();
+        
+        // Configuration
+        this.recognition.continuous = false;
+        this.recognition.interimResults = false;
+        this.recognition.lang = 'en-US';
+        this.recognition.maxAlternatives = 1;
+        
+        // Event listeners
+        this.recognition.onstart = () => {
+            this.isListening = true;
+            this.micPermissionGranted = true;
+            console.log('Speech recognition started');
+        };
+        
+        this.recognition.onresult = (event) => {
+            const result = event.results[0][0].transcript;
+            console.log('Speech recognition result:', result);
+            this.handleSpeechResult(result);
+        };
+        
+        this.recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            this.handleSpeechError(event.error);
+        };
+        
+        this.recognition.onend = () => {
+            this.isListening = false;
+            console.log('Speech recognition ended');
+            
+            if (this.isVoiceMode) {
+                // Restart listening if still in voice mode with a longer delay
+                setTimeout(() => {
+                    if (this.isVoiceMode && !this.isListening) {
+                        this.startListening();
+                    }
+                }, 500);
+            }
+        };
+    }
+    
+    startListening() {
+        if (!this.recognition || this.isListening) return;
+        
+        try {
+            this.recognition.start();
+        } catch (error) {
+            console.error('Failed to start speech recognition:', error);
+            this.handleSpeechError('start-failed');
+        }
+    }
+    
+    handleSpeechResult(result) {
+        if (result.trim()) {
+            // Put the recognized text in the input field
+            this.userInput.value = result;
+            // Automatically send the message
+            this.sendMessage();
+        }
+    }
+    
+    handleSpeechError(error) {
+        let message = '';
+        let isSystemMessage = false;
+        
+        switch (error) {
+            case 'not-allowed':
+                message = '⚠️ Microphone access required. Please allow microphone permission in your browser settings. Voice mode has been disabled.';
+                isSystemMessage = true;
+                break;
+            case 'no-speech':
+                message = '⚠️ No speech detected. Please try speaking again.';
+                isSystemMessage = true;
+                break;
+            case 'network':
+                message = '⚠️ Network error occurred. Please check your internet connection.';
+                isSystemMessage = true;
+                break;
+            case 'start-failed':
+                message = '⚠️ Unable to start voice recognition. Please try again in a moment.';
+                isSystemMessage = true;
+                break;
+            default:
+                message = '⚠️ Voice recognition error occurred. Please try again.';
+                isSystemMessage = true;
+        }
+        
+        // Show error message to user
+        if (isSystemMessage) {
+            this.addSystemMessage(message);
+        } else {
+            this.addBotMessage({
+                response: message,
+                corrections: [],
+                suggestions: []
+            });
+        }
+        
+        // If it's a permission error, turn off voice mode
+        if (error === 'not-allowed') {
+            this.isVoiceMode = false;
+            this.stopVoiceMode();
+        }
+    }
+    
+    addSystemMessage(message) {
+        const timestamp = new Date().toLocaleTimeString(undefined, {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message system-message';
+        
+        messageDiv.innerHTML = `
+            <div class="message-content">
+                <p>${this.escapeHtml(message)}</p>
+                <div class="message-timestamp">${timestamp}</div>
+            </div>
+        `;
+        
+        this.chatMessages.appendChild(messageDiv);
+        this.scrollToBottom();
+    }
+    
+    speakText(text) {
+        if (!this.synthesis) return;
+        
+        // Stop any current speech
+        this.synthesis.cancel();
+        
+        // Clean text for speech (remove special characters and formatting)
+        const cleanText = text.replace(/[📝✏️💡🎓]/g, '').trim();
+        
+        if (!cleanText) return;
+        
+        // Create utterance
+        this.currentUtterance = new SpeechSynthesisUtterance(cleanText);
+        
+        // Configure voice settings
+        this.currentUtterance.lang = 'en-US';
+        this.currentUtterance.rate = 0.9;
+        this.currentUtterance.pitch = 1.0;
+        this.currentUtterance.volume = 0.8;
+        
+        // Find a suitable English voice
+        const voices = this.synthesis.getVoices();
+        const englishVoice = voices.find(voice => 
+            voice.lang.includes('en-US') || voice.lang.includes('en-GB')
+        );
+        
+        if (englishVoice) {
+            this.currentUtterance.voice = englishVoice;
+        }
+        
+        // Event listeners for speech
+        this.currentUtterance.onstart = () => {
+            console.log('Speech synthesis started');
+        };
+        
+        this.currentUtterance.onend = () => {
+            console.log('Speech synthesis ended');
+            this.currentUtterance = null;
+        };
+        
+        this.currentUtterance.onerror = (event) => {
+            console.error('Speech synthesis error:', event.error);
+            this.currentUtterance = null;
+        };
+        
+        // Start speaking
+        this.synthesis.speak(this.currentUtterance);
+    }
+    
+    stopSpeaking() {
+        if (this.synthesis) {
+            this.synthesis.cancel();
+            this.currentUtterance = null;
+        }
     }
 }
 

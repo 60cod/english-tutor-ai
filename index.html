@@ -36,11 +36,16 @@
             </div>
             
             <div class="input-container">
-                <textarea 
-                    id="user-input" 
-                    placeholder="Type your message in English..."
-                    rows="3"
-                ></textarea>
+                <div class="text-input-wrapper">
+                    <textarea 
+                        id="user-input" 
+                        placeholder="Type your message in English..."
+                        rows="3"
+                    ></textarea>
+                    <button id="voice-btn" class="voice-btn-mini" title="음성 모드 켜기/끄기">
+                        <span class="voice-icon">🎙️</span>
+                    </button>
+                </div>
                 <button id="send-btn">Send</button>
             </div>
         </div>
