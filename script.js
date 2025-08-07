@@ -22,6 +22,7 @@ class EnglishChatbot {
         this.synthesis = window.speechSynthesis;
         this.currentUtterance = null;
         this.micPermissionGranted = false;
+        this.isSpeaking = false;
         
         this.initEventListeners();
         this.updateFontSize();
@@ -370,10 +371,10 @@ class EnglishChatbot {
             this.isListening = false;
             console.log('Speech recognition ended');
             
-            if (this.isVoiceMode) {
-                // Restart listening if still in voice mode with a longer delay
+            if (this.isVoiceMode && !this.isSpeaking) {
+                // Only restart listening if not currently speaking
                 setTimeout(() => {
-                    if (this.isVoiceMode && !this.isListening) {
+                    if (this.isVoiceMode && !this.isListening && !this.isSpeaking) {
                         this.startListening();
                     }
                 }, 500);
@@ -382,7 +383,7 @@ class EnglishChatbot {
     }
     
     startListening() {
-        if (!this.recognition || this.isListening) return;
+        if (!this.recognition || this.isListening || this.isSpeaking) return;
         
         try {
             this.recognition.start();
@@ -497,17 +498,43 @@ class EnglishChatbot {
         
         // Event listeners for speech
         this.currentUtterance.onstart = () => {
-            console.log('Speech synthesis started');
+            this.isSpeaking = true;
+            console.log('Speech synthesis started - pausing voice recognition');
+            
+            // Stop listening while speaking to prevent echo
+            if (this.isListening && this.recognition) {
+                this.recognition.stop();
+            }
         };
         
         this.currentUtterance.onend = () => {
-            console.log('Speech synthesis ended');
+            this.isSpeaking = false;
+            console.log('Speech synthesis ended - resuming voice recognition');
             this.currentUtterance = null;
+            
+            // Resume listening after speech ends if still in voice mode
+            if (this.isVoiceMode && !this.isListening) {
+                setTimeout(() => {
+                    if (this.isVoiceMode && !this.isListening && !this.isSpeaking) {
+                        this.startListening();
+                    }
+                }, 300);
+            }
         };
         
         this.currentUtterance.onerror = (event) => {
             console.error('Speech synthesis error:', event.error);
+            this.isSpeaking = false;
             this.currentUtterance = null;
+            
+            // Resume listening if speech synthesis fails
+            if (this.isVoiceMode && !this.isListening) {
+                setTimeout(() => {
+                    if (this.isVoiceMode && !this.isListening && !this.isSpeaking) {
+                        this.startListening();
+                    }
+                }, 300);
+            }
         };
         
         // Start speaking
@@ -517,6 +544,7 @@ class EnglishChatbot {
     stopSpeaking() {
         if (this.synthesis) {
             this.synthesis.cancel();
+            this.isSpeaking = false;
             this.currentUtterance = null;
         }
     }
