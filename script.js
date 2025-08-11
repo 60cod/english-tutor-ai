@@ -564,7 +564,7 @@ class EnglishChatbot {
     // Method to handle read button clicks
     handleReadMessage(text, buttonElement) {
         if (!this.synthesis) {
-            this.showTooltip(buttonElement, 'Web Speech API not supported in this browser');
+            this.showTooltip(buttonElement, 'Not supported in this browser');
             return;
         }
         
@@ -629,20 +629,21 @@ class EnglishChatbot {
         tooltip.className = 'speech-tooltip';
         tooltip.textContent = message;
         
-        // Position tooltip
-        const rect = element.getBoundingClientRect();
+        // Position tooltip at center of screen
         tooltip.style.position = 'fixed';
-        tooltip.style.left = rect.left + 'px';
-        tooltip.style.top = (rect.top - 35) + 'px';
+        tooltip.style.left = '50%';
+        tooltip.style.top = '50%';
+        tooltip.style.transform = 'translate(-50%, -50%)';
         tooltip.style.backgroundColor = '#333';
         tooltip.style.color = 'white';
-        tooltip.style.padding = '5px 8px';
-        tooltip.style.borderRadius = '4px';
-        tooltip.style.fontSize = '12px';
+        tooltip.style.padding = '10px 15px';
+        tooltip.style.borderRadius = '6px';
+        tooltip.style.fontSize = '14px';
         tooltip.style.whiteSpace = 'nowrap';
         tooltip.style.zIndex = '1000';
         tooltip.style.opacity = '0';
         tooltip.style.transition = 'opacity 0.3s';
+        tooltip.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
         
         document.body.appendChild(tooltip);
         
