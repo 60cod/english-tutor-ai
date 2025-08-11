@@ -89,6 +89,12 @@ class UIManager {
             this.chatMessages.style.fontSize = `${this.fontSize}px`;
         }
         
+        // Update textarea font size
+        const userInput = document.getElementById('user-input');
+        if (userInput) {
+            userInput.style.fontSize = `${this.fontSize}px`;
+        }
+        
         if (this.fontSizeDisplay) {
             this.fontSizeDisplay.textContent = `${this.fontSize}px`;
         }
