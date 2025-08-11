@@ -10,6 +10,10 @@ class EnglishChatbot {
         this.headerToggleBtn = document.getElementById('header-toggle');
         this.header = document.querySelector('header');
         this.voiceBtn = document.getElementById('voice-btn');
+        this.speechSettingsBtn = document.getElementById('speech-settings-btn');
+        this.speechSettingsDropdown = document.getElementById('speech-settings-dropdown');
+        this.speechSpeedSelect = document.getElementById('speech-speed');
+        this.speechVoiceSelect = document.getElementById('speech-voice');
         
         this.fontSize = 14;
         this.hasUserSentMessage = false;
@@ -28,10 +32,18 @@ class EnglishChatbot {
         this.speechQueue = [];
         this.isProcessingSpeech = false;
         
+        // Speech settings (reset to defaults on each page load)
+        this.speechSettings = {
+            speed: 1.0,
+            voiceURI: 'auto'
+        };
+        
         this.initEventListeners();
         this.updateFontSize();
         this.setInitialTimestamp();
         this.initVoiceFeature();
+        this.initSpeechSettings();
+        this.populateVoiceOptions();
     }
     
     initEventListeners() {
@@ -49,6 +61,32 @@ class EnglishChatbot {
         if (this.voiceBtn) {
             this.voiceBtn.addEventListener('click', () => this.toggleVoiceMode());
         }
+        
+        if (this.speechSettingsBtn) {
+            this.speechSettingsBtn.addEventListener('click', (e) => this.toggleSpeechSettings(e));
+        }
+        
+        if (this.speechSpeedSelect) {
+            this.speechSpeedSelect.addEventListener('change', (e) => this.updateSpeechSpeed(e.target.value));
+        }
+        
+        if (this.speechVoiceSelect) {
+            this.speechVoiceSelect.addEventListener('change', (e) => this.updateSpeechVoice(e.target.value));
+        }
+        
+        // Listen for voices changed event (some browsers load voices asynchronously)
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.addEventListener) {
+            speechSynthesis.addEventListener('voiceschanged', () => {
+                this.populateVoiceOptions();
+            });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.speechSettingsBtn?.contains(e.target) && !this.speechSettingsDropdown?.contains(e.target)) {
+                this.closeSpeechSettings();
+            }
+        });
     }
     
     async sendMessage() {
@@ -362,7 +400,7 @@ class EnglishChatbot {
         this.recognition.onstart = () => {
             this.isListening = true;
             this.micPermissionGranted = true;
-            console.log('Speech recognition started');
+            //console.log('Speech recognition started');
         };
         
         this.recognition.onresult = (event) => {
@@ -378,7 +416,7 @@ class EnglishChatbot {
         
         this.recognition.onend = () => {
             this.isListening = false;
-            console.log('Speech recognition ended');
+            //console.log('Speech recognition ended');
             
             if (this.isVoiceMode && !this.isSpeaking) {
                 // Only restart listening if not currently speaking
@@ -489,26 +527,37 @@ class EnglishChatbot {
         // Create utterance
         this.currentUtterance = new SpeechSynthesisUtterance(cleanText);
         
-        // Configure voice settings
+        // Configure voice settings using user preferences
         this.currentUtterance.lang = 'en-US';
-        this.currentUtterance.rate = 0.9;
+        this.currentUtterance.rate = this.speechSettings.speed;
         this.currentUtterance.pitch = 1.0;
         this.currentUtterance.volume = 0.8;
         
-        // Find a suitable English voice
+        // Find voice by URI or use default
         const voices = this.synthesis.getVoices();
-        const englishVoice = voices.find(voice => 
-            voice.lang.includes('en-US') || voice.lang.includes('en-GB')
-        );
+        let selectedVoice = null;
         
-        if (englishVoice) {
-            this.currentUtterance.voice = englishVoice;
+        if (this.speechSettings.voiceURI !== 'auto') {
+            selectedVoice = voices.find(voice => 
+                voice.voiceURI === this.speechSettings.voiceURI
+            );
+        }
+        
+        // Fallback to any US English voice if specific voice not found
+        if (!selectedVoice) {
+            selectedVoice = voices.find(voice => 
+                voice.lang.includes('en-US')
+            );
+        }
+        
+        if (selectedVoice) {
+            this.currentUtterance.voice = selectedVoice;
         }
         
         // Event listeners for speech
         this.currentUtterance.onstart = () => {
             this.isSpeaking = true;
-            console.log('Speech synthesis started - pausing voice recognition');
+            //console.log('Speech synthesis started - pausing voice recognition');
             
             // Stop listening while speaking to prevent echo
             if (this.isListening && this.recognition) {
@@ -518,7 +567,7 @@ class EnglishChatbot {
         
         this.currentUtterance.onend = () => {
             this.isSpeaking = false;
-            console.log('Speech synthesis ended - resuming voice recognition');
+            //console.log('Speech synthesis ended - resuming voice recognition');
             this.currentUtterance = null;
             
             // Resume listening after speech ends if still in voice mode
@@ -590,18 +639,30 @@ class EnglishChatbot {
         
         // Configure voice settings
         utterance.lang = 'en-US';
-        utterance.rate = 0.9;
+        utterance.rate = this.speechSettings.speed;
         utterance.pitch = 1.0;
         utterance.volume = 0.8;
         
-        // Find a suitable English voice
+        // Find a suitable English voice based on settings
         const voices = this.synthesis.getVoices();
-        const englishVoice = voices.find(voice => 
-            voice.lang.includes('en-US') || voice.lang.includes('en-GB')
-        );
+        let selectedVoice = null;
         
-        if (englishVoice) {
-            utterance.voice = englishVoice;
+        // Find voice by URI or use default
+        if (this.speechSettings.voiceURI !== 'auto') {
+            selectedVoice = voices.find(voice => 
+                voice.voiceURI === this.speechSettings.voiceURI
+            );
+        }
+        
+        // Fallback to any US English voice if specific gender not found
+        if (!selectedVoice) {
+            selectedVoice = voices.find(voice => 
+                voice.lang.includes('en-US')
+            );
+        }
+        
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
         }
         
         // Event listeners
@@ -659,6 +720,72 @@ class EnglishChatbot {
                 }
             }, 300);
         }, 3000);
+    }
+    
+    // Speech settings methods
+    toggleSpeechSettings(e) {
+        e.stopPropagation();
+        if (this.speechSettingsDropdown) {
+            this.speechSettingsDropdown.classList.toggle('hidden');
+        }
+    }
+    
+    closeSpeechSettings() {
+        if (this.speechSettingsDropdown) {
+            this.speechSettingsDropdown.classList.add('hidden');
+        }
+    }
+    
+    updateSpeechSpeed(speed) {
+        this.speechSettings.speed = parseFloat(speed);
+        this.saveSpeechSettings();
+    }
+    
+    updateSpeechVoice(voiceURI) {
+        this.speechSettings.voiceURI = voiceURI;
+        this.saveSpeechSettings();
+    }
+    
+    saveSpeechSettings() {
+        localStorage.setItem('speechSettings', JSON.stringify(this.speechSettings));
+    }
+    
+    initSpeechSettings() {
+        // Always start with default settings (don't load from localStorage)
+        // Update UI to reflect default settings
+        if (this.speechSpeedSelect) {
+            this.speechSpeedSelect.value = this.speechSettings.speed.toString();
+        }
+        if (this.speechVoiceSelect) {
+            this.speechVoiceSelect.value = this.speechSettings.voiceURI;
+        }
+    }
+    
+    populateVoiceOptions() {
+        if (!this.speechVoiceSelect || !this.synthesis) return;
+        
+        const voices = this.synthesis.getVoices();
+        
+        // Filter for English voices only
+        const englishVoices = voices.filter(voice => 
+            voice.lang.includes('en-US') || voice.lang.includes('en-GB')
+        );
+        
+        // Clear existing options except Auto
+        const autoOption = this.speechVoiceSelect.querySelector('option[value="auto"]');
+        this.speechVoiceSelect.innerHTML = '';
+        this.speechVoiceSelect.appendChild(autoOption);
+        
+        // Add voice options
+        englishVoices.forEach(voice => {
+            const option = document.createElement('option');
+            option.value = voice.voiceURI;
+            option.textContent = `${voice.name} ${voice.lang.includes('en-GB') ? '🇬🇧' : '🇺🇸'}`;
+            this.speechVoiceSelect.appendChild(option);
+        });
+        
+        // Restore selected value
+        this.speechVoiceSelect.value = this.speechSettings.voiceURI;
     }
 }
 

@@ -52,10 +52,16 @@ header {
     transition: all 0.3s ease;
 }
 
-.font-size-controls {
+.header-controls {
     position: absolute;
     bottom: 10px;
     right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.font-size-controls {
     display: flex;
     align-items: center;
     background: rgba(255, 255, 255, 0.2);
@@ -126,7 +132,7 @@ header.collapsed .toggle-icon {
 }
 
 header.collapsed .header-subtitle,
-header.collapsed .font-size-controls {
+header.collapsed .header-controls {
     opacity: 0;
     max-height: 0;
     margin: 0;
@@ -307,6 +313,81 @@ header.collapsed {
     opacity: 1;
     background: rgba(108, 117, 125, 0.2);
     transform: scale(1.1);
+}
+
+.speech-settings {
+    position: relative;
+}
+
+.settings-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 5px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    min-width: 120px;
+    z-index: 1000;
+}
+
+.settings-dropdown.hidden {
+    display: none;
+}
+
+.setting-group {
+    margin-bottom: 10px;
+}
+
+.setting-group:last-child {
+    margin-bottom: 0;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.setting-group select {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    background: white;
+    color: #333;
+}
+
+.setting-group select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.setting-group select:disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .speech-tooltip {
@@ -508,10 +589,11 @@ header.collapsed {
         padding: 20px;
     }
     
-    .font-size-controls {
+    .header-controls {
         position: static;
         margin-top: 10px;
         transition: all 0.3s ease;
+        justify-content: center;
     }
     
     .header-title h1 {

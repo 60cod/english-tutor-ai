@@ -44,10 +44,34 @@
                     <h1>🤖 English Tutor AI</h1>
                     <p class="header-subtitle">Your personal AI tutor for English mastery</p>
                 </div>
-                <div class="font-size-controls">
-                    <button id="decrease-font" class="font-btn" title="글자 크기 줄이기">-</button>
-                    <span id="font-size-display" class="font-size-display">14px</span>
-                    <button id="increase-font" class="font-btn" title="글자 크기 키우기">+</button>
+                <div class="header-controls">
+                    <div class="font-size-controls">
+                        <button id="decrease-font" class="font-btn" title="글자 크기 줄이기">-</button>
+                        <span id="font-size-display" class="font-size-display">14px</span>
+                        <button id="increase-font" class="font-btn" title="글자 크기 키우기">+</button>
+                    </div>
+                    <div class="speech-settings">
+                        <button id="speech-settings-btn" class="settings-btn" title="음성 설정">🔊</button>
+                        <div id="speech-settings-dropdown" class="settings-dropdown hidden">
+                            <div class="setting-group">
+                                <label>Speed:</label>
+                                <select id="speech-speed">
+                                    <option value="0.75">0.75x</option>
+                                    <option value="0.9">0.9x</option>
+                                    <option value="1" selected>1.0x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1.5">1.5x</option>
+                                    <option value="1.75">1.75x</option>
+                                </select>
+                            </div>
+                            <div class="setting-group">
+                                <label>Voice:</label>
+                                <select id="speech-voice">
+                                    <option value="auto" selected>Auto</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <button id="header-toggle" class="header-toggle-btn" title="헤더 접기/펼치기">
                     <span class="toggle-icon">▼</span>
