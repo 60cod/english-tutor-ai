@@ -24,6 +24,10 @@ class EnglishChatbot {
         this.micPermissionGranted = false;
         this.isSpeaking = false;
         
+        // Speech queue for handling multiple read requests
+        this.speechQueue = [];
+        this.isProcessingSpeech = false;
+        
         this.initEventListeners();
         this.updateFontSize();
         this.setInitialTimestamp();
@@ -165,9 +169,14 @@ class EnglishChatbot {
                             const suggestionText = typeof suggestion === 'string' ? suggestion : JSON.stringify(suggestion);
                             return `<div class="feedback-item">
                                 <span class="feedback-text">• ${this.escapeHtml(suggestionText)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy to clipboard">
-                                    📋
-                                </button>
+                                <div class="feedback-actions">
+                                    <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy to clipboard">
+                                        📋
+                                    </button>
+                                    <button class="read-btn feedback" onclick="chatbot.handleReadMessage('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Read expression aloud">
+                                        🔊
+                                    </button>
+                                </div>
                             </div>`;
                         }).join('')}
                     </div>
@@ -177,7 +186,7 @@ class EnglishChatbot {
         
         messageDiv.innerHTML = `
             <div class="message-content">
-                <p>${this.escapeHtml(response.response)}</p>
+                <p>${this.escapeHtml(response.response)} <button class="read-btn inline" onclick="chatbot.handleReadMessage('${this.escapeHtml(response.response).replace(/'/g, '\\\'')}', this)" title="Read message aloud">🔊</button></p>
                 ${feedbackHtml}
                 <div class="message-timestamp">${timestamp}</div>
             </div>
@@ -547,6 +556,108 @@ class EnglishChatbot {
             this.isSpeaking = false;
             this.currentUtterance = null;
         }
+        // Clear speech queue
+        this.speechQueue = [];
+        this.isProcessingSpeech = false;
+    }
+    
+    // Method to handle read button clicks
+    handleReadMessage(text, buttonElement) {
+        if (!this.synthesis) {
+            this.showTooltip(buttonElement, 'Web Speech API not supported in this browser');
+            return;
+        }
+        
+        // Stop current speech and clear queue
+        this.synthesis.cancel();
+        this.speechQueue = [];
+        this.isProcessingSpeech = false;
+        
+        // Start reading the new message
+        this.readTextAloud(text);
+    }
+    
+    // Method to read text aloud (separate from voice mode)
+    readTextAloud(text) {
+        if (!this.synthesis) return;
+        
+        // Clean text for speech
+        const cleanText = text.replace(/[📝✏️💡🎓🔊]/g, '').trim();
+        if (!cleanText) return;
+        
+        // Create utterance
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        
+        // Configure voice settings
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.8;
+        
+        // Find a suitable English voice
+        const voices = this.synthesis.getVoices();
+        const englishVoice = voices.find(voice => 
+            voice.lang.includes('en-US') || voice.lang.includes('en-GB')
+        );
+        
+        if (englishVoice) {
+            utterance.voice = englishVoice;
+        }
+        
+        // Event listeners
+        utterance.onstart = () => {
+            this.isProcessingSpeech = true;
+        };
+        
+        utterance.onend = () => {
+            this.isProcessingSpeech = false;
+        };
+        
+        utterance.onerror = (event) => {
+            console.error('Speech synthesis error:', event.error);
+            this.isProcessingSpeech = false;
+        };
+        
+        // Start speaking
+        this.synthesis.speak(utterance);
+    }
+    
+    // Method to show tooltip
+    showTooltip(element, message) {
+        // Create tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'speech-tooltip';
+        tooltip.textContent = message;
+        
+        // Position tooltip
+        const rect = element.getBoundingClientRect();
+        tooltip.style.position = 'fixed';
+        tooltip.style.left = rect.left + 'px';
+        tooltip.style.top = (rect.top - 35) + 'px';
+        tooltip.style.backgroundColor = '#333';
+        tooltip.style.color = 'white';
+        tooltip.style.padding = '5px 8px';
+        tooltip.style.borderRadius = '4px';
+        tooltip.style.fontSize = '12px';
+        tooltip.style.whiteSpace = 'nowrap';
+        tooltip.style.zIndex = '1000';
+        tooltip.style.opacity = '0';
+        tooltip.style.transition = 'opacity 0.3s';
+        
+        document.body.appendChild(tooltip);
+        
+        // Show tooltip with animation
+        setTimeout(() => tooltip.style.opacity = '1', 10);
+        
+        // Remove tooltip after 3 seconds
+        setTimeout(() => {
+            tooltip.style.opacity = '0';
+            setTimeout(() => {
+                if (tooltip.parentNode) {
+                    document.body.removeChild(tooltip);
+                }
+            }, 300);
+        }, 3000);
     }
 }
 

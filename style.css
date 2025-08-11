@@ -244,6 +244,12 @@ header.collapsed {
     gap: 10px;
 }
 
+.feedback-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
 .feedback-text {
     flex: 1;
     color: #555555;
@@ -263,6 +269,56 @@ header.collapsed {
 .copy-btn:hover {
     background: rgba(108, 117, 125, 0.2);
     border-color: rgba(108, 117, 125, 0.3);
+}
+
+.read-btn.inline {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0 4px;
+    margin-left: 6px;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+    color: #666;
+    vertical-align: baseline;
+    line-height: 1;
+}
+
+.read-btn.inline:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.read-btn.feedback {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    opacity: 0.7;
+    color: #666;
+}
+
+.read-btn.feedback:hover {
+    opacity: 1;
+    background: rgba(108, 117, 125, 0.2);
+    transform: scale(1.1);
+}
+
+.speech-tooltip {
+    position: fixed;
+    background: #333;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
 }
 
 .correction {
