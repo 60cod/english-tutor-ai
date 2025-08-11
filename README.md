@@ -1,3 +1,98 @@
+[English](#english) | [한국어](#한국어)
+
+---
+
+# English Tutor AI 🤖 v2.1.0
+
+An AI chatbot that helps improve English conversation skills through real-time grammar correction and expression enhancement.
+
+<img src="resource/images/screenshot.png" alt="screenshot" width="900">
+
+## 📝 Version History
+
+- **v1.0.0**: Basic text chat and AI grammar correction features
+- **v2.0.0**: Voice conversation mode with real-time speech recognition/synthesis
+- **v2.1.0**: Speech settings feature - speed control and voice selection options
+
+## ✨ Key Features
+
+### 1. 🎙️ Voice Conversation Feature (NEW!)
+- **Real-time Speech Recognition**: Voice-to-text conversion using Web Speech API
+- **Automatic Voice Response**: AI responses in natural English speech
+- **Continuous Conversation Mode**: Seamless English conversation practice with one voice button
+- **Browser Compatibility**: Optimized voice features for Chrome and Safari
+- **Intuitive UI**: Mini voice button in text input corner (🎙️ → 🔴)
+
+### 2. Smart Learning Assistant
+- **Real-time Grammar Correction**: Detects grammar errors and suggests correct expressions
+- **Natural Expression Suggestions**: Recommends more natural and sophisticated English expressions
+- **Mixed Language Support**: Responds in English even when you write in Korean, with appropriate English expression recommendations
+
+### 3. User-Friendly Interface
+- **Mobile Optimized**: Convenient learning environment on smartphones
+- **Header Toggle**: Collapsible header for larger chat view on mobile
+- **Font Size Control**: Freely adjust text size according to personal preference
+- **Responsive Design**: Optimized display on any device
+
+### 4. Learning Tools
+- **Feedback Copy**: Easily copy useful expressions and corrections to clipboard
+- **Real-time Analysis**: Receive improvement suggestions and feedback instantly
+
+## 🏗️ Project Structure
+
+```
+english-tutor-ai/
+├── index.html              # Main page
+├── css/
+│   └── style.css          # Stylesheet
+├── js/                    # JavaScript modules
+│   ├── SpeechManager.js   # Speech recognition/synthesis features
+│   ├── UIManager.js       # UI control features
+│   ├── MessageManager.js  # Chat message handling
+│   └── EnglishChatbot.js  # Main chatbot class
+├── resource/
+│   └── images/            # Image resources
+├── netlify/
+│   └── functions/
+│       └── gemini.js      # Netlify serverless function
+├── .github/
+│   └── workflows/
+│       └── deploy.yml     # GitHub Actions deployment config
+├── netlify.toml          # Netlify configuration
+└── package.json          # Project information
+```
+
+## 🛠️ Tech Stack
+
+- **Frontend**: HTML, CSS, JavaScript
+- **Speech APIs**: Web Speech API (SpeechRecognition, SpeechSynthesis)
+- **Backend**: Netlify Functions (Node.js)
+- **AI API**: Google Gemini Pro
+- **Deployment**: GitHub Pages + Netlify
+- **CI/CD**: GitHub Actions
+
+## 🎯 How to Use
+
+### Text Conversation
+1. Write a message in English or Korean in the input field
+2. Click Send button or press Enter to send
+3. Receive grammar corrections and expression improvement feedback from AI
+
+### Voice Conversation (Chrome/Safari recommended)
+1. Click the 🎙️ button in the bottom right of the text input field
+2. Allow microphone permission and speak **in English only**
+3. Speech is automatically converted to text and sent to AI
+4. Receive AI responses in both voice and text simultaneously
+5. Click 🔴 button to exit voice mode
+
+> **Note**: 
+> - Voice features are supported in Chrome and Safari, requiring microphone permission.
+> - **Voice mode recognizes English only.** (for improved speech recognition accuracy)
+> - Text input supports both Korean and English.
+> - It is possible to choose the speed and type of voice.
+
+---
+
 # English Tutor AI 🤖 v2.1.0
 
 실시간 문법 교정과 표현 개선을 통해 영어 회화 실력 향상을 도와주는 AI 챗봇입니다.
@@ -32,15 +127,21 @@
 - **피드백 복사**: 유용한 표현과 교정 내용을 클립보드로 쉽게 복사
 - **실시간 분석**: 메시지를 보내는 즉시 개선점과 제안사항 제공
 
----
 ## 🏗️ 프로젝트 구조
 
 ```
 english-tutor-ai/
 ├── index.html              # 메인 페이지
-├── style.css              # 스타일시트
-├── script.js              # 프론트엔드 로직
-├── .netlify/
+├── css/
+│   └── style.css          # 스타일시트
+├── js/                    # JavaScript 모듈들
+│   ├── SpeechManager.js   # 음성 인식/합성 기능
+│   ├── UIManager.js       # UI 컨트롤 기능
+│   ├── MessageManager.js  # 채팅 메시지 처리
+│   └── EnglishChatbot.js  # 메인 챗봇 클래스
+├── resource/
+│   └── images/            # 이미지 리소스
+├── netlify/
 │   └── functions/
 │       └── gemini.js      # Netlify 서버리스 함수
 ├── .github/
@@ -48,14 +149,7 @@ english-tutor-ai/
 │       └── deploy.yml     # GitHub Actions 배포 설정
 ├── netlify.toml          # Netlify 설정
 └── package.json          # 프로젝트 정보
-
 ```
-
-## 🔒 보안
-
-- API 키는 서버측(Netlify Functions)에서만 사용
-- CORS 설정으로 안전한 API 호출
-- 환경변수를 통한 민감 정보 보호
 
 ## 🛠️ 기술 스택
 
@@ -82,5 +176,6 @@ english-tutor-ai/
 
 > **참고**: 
 > - 음성 기능은 Chrome, Safari에서 지원되며 마이크 권한이 필요합니다.
-> - **음성 모드에서는 영어만 인식됩니다** (음성 인식률 향상을 위해)
+> - **음성 모드에서는 영어만 인식됩니다.** (음성 인식률 향상을 위해)
 > - 텍스트 입력 시에는 한글과 영어 모두 사용 가능합니다.
+> - 음성 속도와 타입을 선택할 수 있습니다.

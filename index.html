@@ -34,7 +34,7 @@
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
@@ -83,7 +83,7 @@
             <div id="chat-messages" class="chat-messages">
                 <div class="message bot-message">
                     <div class="message-content">
-                        <p>Hello! I'm your English Tutor AI. Send me a message and I'll provide personalized feedback on your grammar, vocabulary, and expressions to help you improve! 🎓</p>
+                        <p>Hello! I'm your English Tutor AI. Send me a message and I'll provide personalized feedback on your grammar, vocabulary, and expressions to help you improve! 🎓 <button class="read-btn inline" onclick="chatbot.handleReadMessage('Hello! I\'m your English Tutor AI. Send me a message and I\'ll provide personalized feedback on your grammar, vocabulary, and expressions to help you improve!', this)" title="Read message aloud">🔊</button></p>
                         <div class="message-timestamp" id="initial-timestamp"></div>
                     </div>
                 </div>
@@ -114,6 +114,9 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/SpeechManager.js"></script>
+    <script src="js/UIManager.js"></script>
+    <script src="js/MessageManager.js"></script>
+    <script src="js/EnglishChatbot.js"></script>
 </body>
 </html>
