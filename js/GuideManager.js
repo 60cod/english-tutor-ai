@@ -27,7 +27,8 @@ class GuideManager {
                             { label: "채팅", desc: "메시지를 입력하고 Send 버튼을 클릭하세요." },
                             { label: "한국어 지원", desc: "한국어로 말해도 챗봇이 이해하고 대답해요!" },
                             { label: "AI 피드백", desc: "문법, 표현에 대한 자연스러운 교정을 제안합니다." },
-                            { label: "복사 기능", desc: "📋 버튼을 클릭하면 손쉽게 복사가 가능해요." }
+                            { label: "복사 기능", desc: "📋 버튼을 클릭하면 손쉽게 복사가 가능해요." },
+                            { label: "간단 번역", desc: "글자를 드래그하면 🔍 버튼이 표시됩니다. 클릭하여 번역된 내용을 확인하고, 복사하거나 원문을 음성으로 들을 수 있습니다." }
                         ]
                     },
                     {
@@ -64,7 +65,8 @@ class GuideManager {
                             { label: "Chat", desc: "Type your message and click the Send button." },
                             { label: "Korean Support", desc: "Feel free to speak in Korean! The chatbot understands and responds." },
                             { label: "AI Feedback", desc: "Get natural grammar and expression correction suggestions." },
-                            { label: "Copy Feature", desc: "Click the 📋 button to easily copy text." }
+                            { label: "Copy Feature", desc: "Click the 📋 button to easily copy text." },
+                            { label: "Translation", desc: "Select English words or sentences in messages to see a 🔍 button. Click for instant translation, copy result, or hear original text spoken aloud." }
                         ]
                     },
                     {
