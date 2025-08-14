@@ -339,6 +339,29 @@ class TextSelectionManager {
         const utterance = new SpeechSynthesisUtterance(this.selectedText);
         utterance.lang = 'en-US';
         utterance.rate = speechManager.speechSettings.speed || 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.8;
+        
+        // Apply user's selected voice (same as SpeechManager)
+        const voices = speechSynthesis.getVoices();
+        let selectedVoice = null;
+        
+        if (speechManager.speechSettings.voiceURI !== 'auto') {
+            selectedVoice = voices.find(voice => 
+                voice.voiceURI === speechManager.speechSettings.voiceURI
+            );
+        }
+        
+        // Fallback to any US English voice if specific voice not found
+        if (!selectedVoice) {
+            selectedVoice = voices.find(voice => 
+                voice.lang.includes('en-US')
+            );
+        }
+        
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
         
         utterance.onend = () => {
             if (speakBtn) {
