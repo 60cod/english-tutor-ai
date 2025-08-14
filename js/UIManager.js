@@ -95,6 +95,12 @@ class UIManager {
             userInput.style.fontSize = `${this.fontSize}px`;
         }
         
+        // Update translation popup font size
+        const translationPopups = document.querySelectorAll('.translation-popup');
+        translationPopups.forEach(popup => {
+            popup.style.fontSize = `${this.fontSize}px`;
+        });
+        
         if (this.fontSizeDisplay) {
             this.fontSizeDisplay.textContent = `${this.fontSize}px`;
         }

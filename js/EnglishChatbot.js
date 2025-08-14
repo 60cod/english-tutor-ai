@@ -6,6 +6,7 @@ class EnglishChatbot {
         this.uiManager = new UIManager();
         this.messageManager = new MessageManager();
         this.guideManager = new GuideManager(this);
+        this.textSelectionManager = new TextSelectionManager(this);
         
         // Main UI elements
         this.userInput = document.getElementById('user-input');
@@ -43,6 +44,15 @@ class EnglishChatbot {
         
         // Guide manager callbacks
         this.guideManager.onTooltipShow = (element, text, position) => this.showTooltip(element, text, position);
+        
+        // Text selection manager callbacks
+        this.textSelectionManager.onTranslationSuccess = (result) => {
+            console.log('Translation completed:', result);
+        };
+        
+        this.textSelectionManager.onTranslationError = (error) => {
+            console.error('Translation failed:', error);
+        };
     }
     
     initEventListeners() {
