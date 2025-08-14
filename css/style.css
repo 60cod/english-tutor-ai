@@ -650,11 +650,45 @@ header.collapsed {
     border-radius: 15px 15px 0 0;
     margin: 0;
     flex-shrink: 0;
+    gap: 15px;
 }
 
 .help-panel-header h3 {
     margin: 0;
     font-size: 1.3rem;
+    font-weight: 600;
+    flex: 1;
+}
+
+.language-toggle {
+    display: flex;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.lang-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.lang-btn.active {
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 1;
     font-weight: 600;
 }
 
@@ -702,6 +736,7 @@ header.collapsed {
     border-radius: 0 0 15px 15px;
     flex: 1;
     min-height: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .help-section {
@@ -714,7 +749,7 @@ header.collapsed {
 
 .help-section h4 {
     color: #3b82f6;
-    margin-bottom: 12px;
+    margin-bottom: 7px;
     font-size: 1.1rem;
     font-weight: 600;
 }
@@ -726,7 +761,7 @@ header.collapsed {
 }
 
 .help-section li {
-    padding: 8px 0;
+    padding: 6px 0 0 15px;
     border-bottom: 1px solid #f3f4f6;
     line-height: 1.5;
 }
@@ -854,10 +889,20 @@ header.collapsed {
     
     .help-panel-header {
         padding: 15px 20px;
+        gap: 10px;
     }
     
     .help-panel-header h3 {
         font-size: 1.1rem;
+    }
+    
+    .language-toggle {
+        padding: 2px;
+    }
+    
+    .lang-btn {
+        padding: 4px 8px;
+        font-size: 11px;
     }
     
     .help-panel-content {
