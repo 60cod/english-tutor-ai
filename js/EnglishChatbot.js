@@ -47,7 +47,7 @@ class EnglishChatbot {
         
         // Text selection manager callbacks
         this.textSelectionManager.onTranslationSuccess = (result) => {
-            console.log('Translation completed:', result);
+            //console.log('Translation completed:', result);
         };
         
         this.textSelectionManager.onTranslationError = (error) => {

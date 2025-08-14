@@ -332,19 +332,16 @@ class TextSelectionManager {
         const speechManager = this.chatbot.speechManager;
         const speakBtn = this.translationPopup.querySelector('.speak-btn');
         
-        // Show speaking state
-        const originalText = speakBtn.innerHTML;
-        speakBtn.innerHTML = '🔊 Speaking...';
+        // Disable button during speech without changing text
         speakBtn.disabled = true;
         
-        // Create utterance for Korean
-        const utterance = new SpeechSynthesisUtterance(this.currentTranslation.text);
-        utterance.lang = 'ko-KR';
+        // Create utterance for original English text
+        const utterance = new SpeechSynthesisUtterance(this.selectedText);
+        utterance.lang = 'en-US';
         utterance.rate = speechManager.speechSettings.speed || 1.0;
         
         utterance.onend = () => {
             if (speakBtn) {
-                speakBtn.innerHTML = originalText;
                 speakBtn.disabled = false;
             }
         };
@@ -352,11 +349,7 @@ class TextSelectionManager {
         utterance.onerror = (error) => {
             console.error('Speech failed:', error);
             if (speakBtn) {
-                speakBtn.innerHTML = '🔊 Error';
-                setTimeout(() => {
-                    speakBtn.innerHTML = originalText;
-                    speakBtn.disabled = false;
-                }, 2000);
+                speakBtn.disabled = false;
             }
         };
         

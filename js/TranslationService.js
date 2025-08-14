@@ -99,7 +99,7 @@ class TranslationService {
             this.cache.set(cacheKey, result);
             this.scheduleCacheCleanup(cacheKey, 1000 * 60 * 30); // 30 minutes
             
-            console.log(`Translation success: "${text}" -> "${result.text}"`);
+            //console.log(`Translation success: "${text}" -> "${result.text}"`);
             return result;
             
         } catch (error) {
