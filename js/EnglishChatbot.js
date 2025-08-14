@@ -5,6 +5,7 @@ class EnglishChatbot {
         this.speechManager = new SpeechManager();
         this.uiManager = new UIManager();
         this.messageManager = new MessageManager();
+        this.guideManager = new GuideManager(this);
         
         // Main UI elements
         this.userInput = document.getElementById('user-input');
@@ -39,6 +40,9 @@ class EnglishChatbot {
         
         // Message manager callbacks
         this.messageManager.onReadMessage = (text, element) => this.handleReadMessage(text, element);
+        
+        // Guide manager callbacks
+        this.guideManager.onTooltipShow = (element, text, position) => this.showTooltip(element, text, position);
     }
     
     initEventListeners() {
@@ -248,6 +252,18 @@ class EnglishChatbot {
     populateVoiceOptions() {
         const voices = this.speechManager.getAvailableVoices();
         this.uiManager.populateVoiceOptions(voices);
+    }
+    
+    showTooltip(element, text, position = 'top') {
+        if (this.guideManager) {
+            this.guideManager.showTooltip(element, text, position);
+        }
+    }
+    
+    hideTooltip() {
+        if (this.guideManager) {
+            this.guideManager.hideTooltip();
+        }
     }
 }
 

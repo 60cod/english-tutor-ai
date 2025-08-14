@@ -153,9 +153,10 @@ header.collapsed {
 
 .chat-messages {
     flex: 1;
-    padding: 20px;
+    padding: 20px 20px 0;
     overflow-y: auto;
     background: #f8f9fa;
+    position: relative;
 }
 
 .message {
@@ -572,6 +573,198 @@ header.collapsed {
     text-decoration: none;
 }
 
+/* Help System Styles */
+.help-floating-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+    z-index: 1100;
+    transition: all 0.3s ease;
+    animation: helpButtonPulse 2s infinite;
+}
+
+.help-floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    animation: none;
+}
+
+.help-floating-btn:focus {
+    outline: 3px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+}
+
+.help-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+@keyframes helpButtonPulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.05);
+    }
+}
+
+.help-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.help-panel.hidden {
+    display: none;
+}
+
+.help-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.help-panel-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.help-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.help-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.help-close-btn:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+.help-panel > div {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.help-panel-content {
+    padding: 25px;
+    overflow-y: auto;
+    border-radius: 0 0 15px 15px;
+    flex: 1;
+    min-height: 0;
+}
+
+.help-section {
+    margin-bottom: 37px;
+}
+
+.help-section:last-child {
+    margin-bottom: 0;
+}
+
+.help-section h4 {
+    color: #3b82f6;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.help-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.help-section li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    line-height: 1.5;
+}
+
+.help-section li:last-child {
+    border-bottom: none;
+}
+
+.help-section li strong {
+    color: #374151;
+    font-weight: 600;
+}
+
+.guide-tooltip {
+    position: fixed;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    z-index: 1300;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.guide-tooltip::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+}
+
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -639,5 +832,39 @@ header.collapsed {
     #user-input {
         padding: 12px 40px 12px 12px;
         height: 60px;
+    }
+    
+    /* Mobile help system adjustments */
+    .help-floating-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+        font-size: 20px;
+    }
+    
+    .help-icon {
+        font-size: 24px;
+    }
+    
+    .help-panel-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+    
+    .help-panel-header {
+        padding: 15px 20px;
+    }
+    
+    .help-panel-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .help-panel-content {
+        padding: 20px;
+    }
+
+    .footer {
+        padding: 7px 20px;
     }
 }
