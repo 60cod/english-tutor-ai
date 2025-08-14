@@ -10,6 +10,10 @@ class TextSelectionManager {
         
         this.translationService = new TranslationService();
         
+        // Callback functions (can be set by parent)
+        this.onTranslationSuccess = null;
+        this.onTranslationError = null;
+        
         this.initSelectionDetection();
     }
     

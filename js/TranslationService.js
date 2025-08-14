@@ -52,10 +52,17 @@ class TranslationService {
         try {
             // Apply rate limiting
             await this.rateLimiter.acquire();
+
+            let apiUrl;
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                apiUrl = '/.netlify/functions/deepl-translate';
+            } else if (window.location.hostname.includes('netlify.app')) {
+                apiUrl = '/.netlify/functions/deepl-translate';
+            } else {
+                apiUrl = 'https://60-english-tutor-ai.netlify.app/.netlify/functions/deepl-translate';
+            }
             
-            console.log(`Translating: "${text.substring(0, 50)}..." to ${targetLang}`);
-            
-            const response = await fetch('/.netlify/functions/deepl-translate', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,6 +74,11 @@ class TranslationService {
             });
             
             if (!response.ok) {
+                console.error('DeepL API Error Details:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    url: response.url
+                });
                 await this.handleApiError(response);
             }
             
@@ -85,7 +97,7 @@ class TranslationService {
             
             // Cache successful result with expiration
             this.cache.set(cacheKey, result);
-            this.scheduleCache클eanup(cacheKey, 1000 * 60 * 30); // 30 minutes
+            this.scheduleCacheCleanup(cacheKey, 1000 * 60 * 30); // 30 minutes
             
             console.log(`Translation success: "${text}" -> "${result.text}"`);
             return result;
@@ -142,7 +154,7 @@ class TranslationService {
         return new Error('Translation error occurred. Please try again later.');
     }
     
-    scheduleCache클eanup(cacheKey, delayMs) {
+    scheduleCacheCleanup(cacheKey, delayMs) {
         setTimeout(() => {
             if (this.cache.has(cacheKey)) {
                 const entry = this.cache.get(cacheKey);
