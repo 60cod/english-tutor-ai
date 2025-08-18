@@ -69,6 +69,7 @@ header {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.3);
     max-width: 93px;
+    height: 32px;
 }
 
 .font-btn {
@@ -326,6 +327,8 @@ header.collapsed {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
+    height: 32px;
+    box-sizing: border-box;
 }
 
 .settings-btn:hover {
@@ -1196,8 +1199,8 @@ header.collapsed {
     position: relative;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 6px 12px;
+    border-radius: 6px;
+    padding: 4px 8px;
     color: white;
     cursor: pointer;
     font-size: 14px;
@@ -1205,6 +1208,7 @@ header.collapsed {
     display: flex;
     align-items: center;
     gap: 6px;
+    min-height: 32px;
 }
 
 .notes-toggle-btn:hover {
@@ -1218,6 +1222,7 @@ header.collapsed {
     border-radius: 50%;
     width: 18px;
     height: 18px;
+    min-width: 18px;
     font-size: 10px;
     font-weight: bold;
     display: flex;
@@ -1225,6 +1230,7 @@ header.collapsed {
     justify-content: center;
     transform: scale(0);
     transition: transform 0.2s ease;
+    flex-shrink: 0;
 }
 
 .notes-count-badge.show {
@@ -1261,7 +1267,9 @@ header.collapsed {
     
     .notes-toggle-btn {
         width: 40px;
-        height: 40px;
+        height: 32px;
+        min-width: 40px;
+        padding: 6px;
     }
     
     .notes-icon {
