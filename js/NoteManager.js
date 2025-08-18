@@ -71,9 +71,11 @@ class NoteManager {
         // Add note events
         this.addBtn?.addEventListener('click', () => this.addNote());
         this.addInput?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
                 this.addNote();
             }
+            // Shift+Enter는 줄바꿈으로 동작 (기본 동작 허용)
         });
         
         // Toolbar events
@@ -343,11 +345,8 @@ class NoteManager {
             const count = this.notes.length;
             badge.textContent = count;
             
-            if (count > 0) {
-                badge.classList.add('show');
-            } else {
-                badge.classList.remove('show');
-            }
+            // 항상 뱃지를 표시 (0일 때도 표시)
+            badge.classList.add('show');
         }
     }
     

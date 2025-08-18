@@ -157,14 +157,14 @@
 
         <div class="notes-add-section">
             <div class="notes-add-form">
-                <textarea id="notes-add-input" placeholder="Add a quick note..." class="notes-add-input" rows="2"></textarea>
+                <select id="notes-add-category" class="notes-add-category">
+                    <option value="general">📝 General</option>
+                    <option value="corrections">✏️ Corrections</option>
+                    <option value="expressions">💡 Expressions</option>
+                    <option value="translations">🌐 Translations</option>
+                </select>
                 <div class="notes-add-controls">
-                    <select id="notes-add-category" class="notes-add-category">
-                        <option value="general">📝 General</option>
-                        <option value="corrections">✏️ Corrections</option>
-                        <option value="expressions">💡 Expressions</option>
-                        <option value="translations">🌐 Translations</option>
-                    </select>
+                    <textarea id="notes-add-input" placeholder="Add a quick note..." class="notes-add-input" rows="2"></textarea>
                     <button id="notes-add-btn" class="notes-add-btn">Add Note</button>
                 </div>
             </div>
