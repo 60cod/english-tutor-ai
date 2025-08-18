@@ -111,12 +111,12 @@ class GuideManager {
         this.floatingBtn.title = '챗봇 가이드 보기';
         this.floatingBtn.innerHTML = '<span class="help-icon">💡</span>';
         
-        // Append to chat-messages container instead of body
-        const chatMessages = document.getElementById('chat-messages');
+        // Append to input-container container instead of body
+        const chatMessages = document.getElementById('input-container');
         if (chatMessages) {
             chatMessages.appendChild(this.floatingBtn);
         } else {
-            // Fallback to body if chat-messages not found
+            // Fallback to body if input-container not found
             document.body.appendChild(this.floatingBtn);
         }
     }
