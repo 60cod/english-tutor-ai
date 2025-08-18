@@ -72,7 +72,10 @@
                             </div>
                         </div>
                     </div>
-                    <button id="notes-toggle" class="settings-btn" title="노트 패널 열기/닫기">📝</button>
+                    <button id="notes-toggle" class="notes-toggle-btn" title="노트 패널 열기/닫기">
+                        📝
+                        <span id="notes-count-badge" class="notes-count-badge">0</span>
+                    </button>
                 </div>
                 <button id="header-toggle" class="header-toggle-btn" title="헤더 접기/펼치기">
                     <span class="toggle-icon">▼</span>
@@ -117,6 +120,7 @@
 
     <!-- Notes Side Panel -->
     <div id="notes-panel" class="notes-panel">
+        <div class="notes-resize-handle" id="notes-resize-handle"></div>
         <div class="notes-panel-header">
             <h3>📝 Study Notes</h3>
             <button id="notes-close" class="notes-close-btn" title="노트 패널 닫기">×</button>
