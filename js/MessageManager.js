@@ -43,9 +43,14 @@ class MessageManager {
                             const correctionText = typeof correction === 'string' ? correction : JSON.stringify(correction);
                             return `<div class="feedback-item">
                                 <span class="feedback-text">• ${this.escapeHtml(correctionText)}</span>
-                                <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correctionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy!">
-                                    📋
-                                </button>
+                                <div class="feedback-actions">
+                                    <button class="copy-btn" onclick="chatbot.copyToClipboard('${this.escapeHtml(correctionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Copy!">
+                                        📋
+                                    </button>
+                                    <button class="add-note-btn" onclick="window.noteManager?.addNoteFromSource('${this.escapeHtml(correctionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', 'corrections', 'chat_correction')" title="Add to notes">
+                                        📝
+                                    </button>
+                                </div>
                             </div>`;
                         }).join('')}
                     </div>
@@ -69,6 +74,9 @@ class MessageManager {
                                     <button class="read-btn feedback" onclick="chatbot.handleReadMessage('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Read expression aloud">
                                         🔊
                                     </button>
+                                    <button class="add-note-btn" onclick="window.noteManager?.addNoteFromSource('${this.escapeHtml(suggestionText).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', 'expressions', 'chat_suggestion')" title="Add to notes">
+                                        📝
+                                    </button>
                                 </div>
                             </div>`;
                         }).join('')}
@@ -79,7 +87,10 @@ class MessageManager {
         
         messageDiv.innerHTML = `
             <div class="message-content">
-                <p>${this.escapeHtml(response.response)} <button class="read-btn inline" onclick="chatbot.handleReadMessage('${this.escapeHtml(response.response).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Read message aloud">🔊</button></p>
+                <p>${this.escapeHtml(response.response)} 
+                    <button class="read-btn inline" onclick="chatbot.handleReadMessage('${this.escapeHtml(response.response).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', this)" title="Read message aloud">🔊</button>
+                    <button class="add-note-btn inline" onclick="window.noteManager?.addNoteFromSource('${this.escapeHtml(response.response).replace(/'/g, '\\\'').replace(/"/g, '&quot;')}', 'general', 'chat_message')" title="Add message to notes">📝</button>
+                </p>
                 ${feedbackHtml}
                 <div class="message-timestamp">${timestamp}</div>
             </div>

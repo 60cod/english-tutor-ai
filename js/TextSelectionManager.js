@@ -146,6 +146,9 @@ class TextSelectionManager {
                 <button class="action-btn speak-btn" disabled>
                     🔊 Speak
                 </button>
+                <button class="action-btn add-note-btn" disabled>
+                    📝 Note
+                </button>
             </div>
         `;
         
@@ -227,6 +230,12 @@ class TextSelectionManager {
             this.speakTranslation();
         });
         
+        // Add note button
+        const addNoteBtn = popup.querySelector('.add-note-btn');
+        addNoteBtn.addEventListener('click', () => {
+            this.addToNotes();
+        });
+        
         // Prevent popup clicks from bubbling
         popup.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -248,8 +257,10 @@ class TextSelectionManager {
             // Enable action buttons
             const copyBtn = popup.querySelector('.copy-btn');
             const speakBtn = popup.querySelector('.speak-btn');
+            const addNoteBtn = popup.querySelector('.add-note-btn');
             copyBtn.disabled = false;
             speakBtn.disabled = false;
+            addNoteBtn.disabled = false;
             
             // Show success animation
             resultDiv.style.animation = 'fadeInScale 0.3s ease';
@@ -385,6 +396,33 @@ class TextSelectionManager {
             this.translationPopup = null;
             this.currentTranslation = null;
         }
+    }
+    
+    addToNotes() {
+        if (!this.currentTranslation) return;
+        
+        // Create note text with both original and translation
+        const noteText = `${this.selectedText} → ${this.currentTranslation.text}`;
+        
+        // Add to notes with translation category
+        if (window.noteManager) {
+            window.noteManager.addNoteFromSource(noteText, 'translations', 'quick_translation');
+        }
+        
+        // Show visual feedback
+        const addNoteBtn = this.translationPopup.querySelector('.add-note-btn');
+        const originalText = addNoteBtn.innerHTML;
+        addNoteBtn.innerHTML = '✓ Added';
+        addNoteBtn.style.background = '#10b981';
+        addNoteBtn.style.color = 'white';
+        
+        setTimeout(() => {
+            if (addNoteBtn) {
+                addNoteBtn.innerHTML = originalText;
+                addNoteBtn.style.background = '';
+                addNoteBtn.style.color = '';
+            }
+        }, 2000);
     }
     
     escapeHtml(text) {

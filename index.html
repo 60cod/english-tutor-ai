@@ -72,6 +72,7 @@
                             </div>
                         </div>
                     </div>
+                    <button id="notes-toggle" class="settings-btn" title="노트 패널 열기/닫기">📝</button>
                 </div>
                 <button id="header-toggle" class="header-toggle-btn" title="헤더 접기/펼치기">
                     <span class="toggle-icon">▼</span>
@@ -113,6 +114,66 @@
             <p>Made by <a href="mailto:zz6cod@gmail.com">zz6cod@gmail.com</a></p>
         </footer>
     </div>
+
+    <!-- Notes Side Panel -->
+    <div id="notes-panel" class="notes-panel">
+        <div class="notes-panel-header">
+            <h3>📝 Study Notes</h3>
+            <button id="notes-close" class="notes-close-btn" title="노트 패널 닫기">×</button>
+        </div>
+        
+        <div class="notes-panel-toolbar">
+            <div class="notes-search-container">
+                <input type="text" id="notes-search" placeholder="Search notes..." class="notes-search">
+                <button id="notes-search-clear" class="notes-search-clear" title="Clear search">×</button>
+            </div>
+            <div class="notes-toolbar-buttons">
+                <button id="notes-export" class="notes-toolbar-btn" title="Export notes">📤</button>
+                <button id="notes-import" class="notes-toolbar-btn" title="Import notes">📥</button>
+                <button id="notes-clear-all" class="notes-toolbar-btn" title="Clear all notes">🗑️</button>
+            </div>
+        </div>
+
+        <div class="notes-categories">
+            <button class="notes-category-tab active" data-category="all">All</button>
+            <button class="notes-category-tab" data-category="general">📝 General</button>
+            <button class="notes-category-tab" data-category="corrections">✏️ Corrections</button>
+            <button class="notes-category-tab" data-category="expressions">💡 Expressions</button>
+            <button class="notes-category-tab" data-category="translations">🌐 Translations</button>
+        </div>
+
+        <div class="notes-content">
+            <div id="notes-list" class="notes-list">
+                <div class="notes-empty-state">
+                    <p>📝 No notes yet</p>
+                    <p>Click the note buttons in chat messages to start collecting useful expressions and corrections!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notes-add-section">
+            <div class="notes-add-form">
+                <textarea id="notes-add-input" placeholder="Add a quick note..." class="notes-add-input" rows="2"></textarea>
+                <div class="notes-add-controls">
+                    <select id="notes-add-category" class="notes-add-category">
+                        <option value="general">📝 General</option>
+                        <option value="corrections">✏️ Corrections</option>
+                        <option value="expressions">💡 Expressions</option>
+                        <option value="translations">🌐 Translations</option>
+                    </select>
+                    <button id="notes-add-btn" class="notes-add-btn">Add Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Panel Overlay -->
+    <div id="notes-overlay" class="notes-overlay"></div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="notes-import-input" accept=".json" style="display: none;">
+
+    <script src="js/NoteManager.js"></script>
 
     <script src="js/SpeechManager.js"></script>
     <script src="js/UIManager.js"></script>
