@@ -2,7 +2,7 @@
 
 ---
 
-# English Tutor AI 🤖 v2.1.0
+# English Tutor AI 🤖 v2.2.0
 
 An AI chatbot that helps improve English conversation skills through real-time grammar correction and expression enhancement.
 
@@ -13,6 +13,7 @@ An AI chatbot that helps improve English conversation skills through real-time g
 - **v1.0.0**: Basic text chat and AI grammar correction features
 - **v2.0.0**: Voice conversation mode with real-time speech recognition/synthesis
 - **v2.1.0**: Speech settings feature - speed control and voice selection options
+- **v2.2.0**: One-Click Personal Note panel for saving important expressions and corrections
 
 ## ✨ Key Features
 
@@ -93,7 +94,7 @@ english-tutor-ai/
 
 ---
 
-# English Tutor AI 🤖 v2.1.0
+# English Tutor AI 🤖 v2.2.0
 
 실시간 문법 교정과 표현 개선을 통해 영어 회화 실력 향상을 도와주는 AI 챗봇입니다.
 
@@ -102,6 +103,7 @@ english-tutor-ai/
 - **v1.0.0**: 기본 텍스트 채팅 및 AI 문법 교정 기능
 - **v2.0.0**: 음성 대화 모드 및 실시간 음성 인식/합성 추가
 - **v2.1.0**: 음성 설정 기능 - 속도 조절 및 음성 선택 옵션 제공
+- **v2.2.0**: 원클릭 개인 노트 패널 - 중요한 표현과 교정사항 저장 기능
 
 ## ✨ 주요 기능
 
