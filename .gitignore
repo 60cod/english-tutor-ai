@@ -26,3 +26,5 @@ build/
 
 # Documentation (design files)
 docs/
+
+.claude/

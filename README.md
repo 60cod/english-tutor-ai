@@ -7,6 +7,7 @@
 An AI chatbot that helps improve English conversation skills through real-time grammar correction and expression enhancement.
 
 <img src="resource/images/screenshot.png" alt="screenshot" width="900">
+<img src="resource/images/screenshot-note.png" alt="screenshot" width="900">
 
 ## 📝 Version History
 
@@ -35,7 +36,16 @@ An AI chatbot that helps improve English conversation skills through real-time g
 - **Font Size Control**: Freely adjust text size according to personal preference
 - **Responsive Design**: Optimized display on any device
 
-### 4. Learning Tools
+### 4. 📝 One-Click Personal Note Panel (NEW!)
+- **Quick Note Saving**: Save important expressions, corrections, and translations with one click
+- **Smart Categorization**: Automatically categorizes notes into General, Corrections, Expressions, and Translations
+- **Advanced Search**: Find notes quickly with text search and hashtag support
+- **Import/Export**: Backup and restore your notes as JSON files
+- **Resizable Panel**: Drag to resize the panel width according to your preference
+- **Keyboard Shortcuts**: Use `Ctrl+Shift+N` to quickly toggle the notes panel
+- **Auto-Backup Reminders**: Get reminders to backup your notes when you have 20+ saved notes
+
+### 5. Learning Tools
 - **Feedback Copy**: Easily copy useful expressions and corrections to clipboard
 - **Real-time Analysis**: Receive improvement suggestions and feedback instantly
 
@@ -50,6 +60,7 @@ english-tutor-ai/
 │   ├── SpeechManager.js   # Speech recognition/synthesis features
 │   ├── UIManager.js       # UI control features
 │   ├── MessageManager.js  # Chat message handling
+│   ├── NoteManager.js     # Personal notes management system
 │   └── EnglishChatbot.js  # Main chatbot class
 ├── resource/
 │   └── images/            # Image resources
@@ -86,11 +97,20 @@ english-tutor-ai/
 4. Receive AI responses in both voice and text simultaneously
 5. Click 🔴 button to exit voice mode
 
+### Notes Panel Usage
+1. Click the 📝 button in chat messages to save notes with one click
+2. Use the 📝 icon in the top right to open/close the notes panel
+3. Utilize category filtering and search functionality
+4. Use note editing, copying, duplicating, and deleting features
+5. Use `Ctrl+Shift+N` shortcut for quick panel toggle
+6. Systematically manage important expressions and corrections
+
 > **Note**: 
 > - Voice features are supported in Chrome and Safari, requiring microphone permission.
 > - **Voice mode recognizes English only.** (for improved speech recognition accuracy)
 > - Text input supports both Korean and English.
 > - It is possible to choose the speed and type of voice.
+> - Notes are stored in browser local storage and can be backed up/restored as JSON files.
 
 ---
 
@@ -125,7 +145,16 @@ english-tutor-ai/
 - **글씨 크기 조절**: 개인의 선호에 맞춰 텍스트 크기 자유 조정
 - **반응형 디자인**: 어떤 기기에서든 최적화된 화면
 
-### 4. 학습 도구
+### 4. 📝 원클릭 개인 노트 패널 (NEW!)
+- **빠른 노트 저장**: 중요한 표현, 교정사항, 번역을 원클릭으로 저장
+- **스마트 분류**: 일반, 교정, 표현, 번역으로 자동 분류
+- **고급 검색**: 텍스트 검색 및 해시태그 지원으로 빠른 노트 찾기
+- **가져오기/내보내기**: JSON 파일로 노트 백업 및 복원
+- **크기 조절 가능**: 드래그로 패널 너비를 원하는 대로 조절
+- **키보드 단축키**: `Ctrl+Shift+N`으로 노트 패널 빠르게 토글
+- **자동 백업 알림**: 20개 이상 노트 저장 시 백업 알림 제공
+
+### 5. 학습 도구
 - **피드백 복사**: 유용한 표현과 교정 내용을 클립보드로 쉽게 복사
 - **실시간 분석**: 메시지를 보내는 즉시 개선점과 제안사항 제공
 
@@ -140,6 +169,7 @@ english-tutor-ai/
 │   ├── SpeechManager.js   # 음성 인식/합성 기능
 │   ├── UIManager.js       # UI 컨트롤 기능
 │   ├── MessageManager.js  # 채팅 메시지 처리
+│   ├── NoteManager.js     # 개인 노트 관리 시스템
 │   └── EnglishChatbot.js  # 메인 챗봇 클래스
 ├── resource/
 │   └── images/            # 이미지 리소스
@@ -176,8 +206,17 @@ english-tutor-ai/
 4. AI 응답을 음성과 텍스트로 동시에 받기
 5. 🔴 버튼 클릭으로 음성 모드 종료
 
+### 노트 패널 사용법
+1. 채팅 메시지의 📝 버튼을 클릭해서 원클릭으로 노트 저장
+2. 우측 상단의 📝 아이콘으로 노트 패널 열기/닫기
+3. 카테고리별 필터링 및 검색 기능 활용
+4. 노트 편집, 복사, 복제, 삭제 기능 사용
+5. `Ctrl+Shift+N` 단축키로 빠른 패널 토글
+6. 중요한 표현과 교정사항을 체계적으로 관리
+
 > **참고**: 
 > - 음성 기능은 Chrome, Safari에서 지원되며 마이크 권한이 필요합니다.
 > - **음성 모드에서는 영어만 인식됩니다.** (음성 인식률 향상을 위해)
 > - 텍스트 입력 시에는 한글과 영어 모두 사용 가능합니다.
 > - 음성 속도와 타입을 선택할 수 있습니다.
+> - 노트는 브라우저 로컬 스토리지에 저장되며, JSON 파일로 백업/복원이 가능합니다.
