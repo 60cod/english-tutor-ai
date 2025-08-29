@@ -2,7 +2,7 @@
 
 ---
 
-# English Tutor AI 🤖 v2.2.0
+# English Tutor AI 🤖 v2.3.0
 
 An AI chatbot that helps improve English conversation skills through real-time grammar correction and expression enhancement.
 
@@ -15,6 +15,7 @@ An AI chatbot that helps improve English conversation skills through real-time g
 - **v2.0.0**: Voice conversation mode with real-time speech recognition/synthesis
 - **v2.1.0**: Speech settings feature - speed control and voice selection options
 - **v2.2.0**: One-Click Personal Note panel for saving important expressions and corrections
+- **v2.3.0**: Secure API proxy architecture - eliminated serverless functions, enabled static hosting
 
 ## ✨ Key Features
 
@@ -57,20 +58,21 @@ english-tutor-ai/
 ├── css/
 │   └── style.css          # Stylesheet
 ├── js/                    # JavaScript modules
+│   ├── api/               # API client modules (NEW)
+│   │   ├── ApiProxyClient.js  # Secure API key management
+│   │   └── GeminiClient.js    # Gemini AI integration
 │   ├── SpeechManager.js   # Speech recognition/synthesis features
 │   ├── UIManager.js       # UI control features
 │   ├── MessageManager.js  # Chat message handling
+│   ├── TranslationService.js # DeepL translation service
 │   ├── NoteManager.js     # Personal notes management system
 │   └── EnglishChatbot.js  # Main chatbot class
 ├── resource/
 │   └── images/            # Image resources
-├── netlify/
-│   └── functions/
-│       └── gemini.js      # Netlify serverless function
+├── test-integration.html  # API integration testing interface
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml     # GitHub Actions deployment config
-├── netlify.toml          # Netlify configuration
 └── package.json          # Project information
 ```
 
@@ -78,10 +80,10 @@ english-tutor-ai/
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Speech APIs**: Web Speech API (SpeechRecognition, SpeechSynthesis)
-- **Backend**: Netlify Functions (Node.js)
-- **AI API**: Google Gemini Pro
-- **Deployment**: GitHub Pages + Netlify
-- **CI/CD**: GitHub Actions
+- **API Integration**: Secure API proxy architecture (api-proxy.ygna.blog)
+- **AI APIs**: Google Gemini 2.0 Flash, DeepL Translation
+- **Deployment**: Static hosting compatible (GitHub Pages, Vercel)
+- **Security**: API key caching, origin validation, secure proxy calls
 
 ## 🎯 How to Use
 
@@ -114,7 +116,7 @@ english-tutor-ai/
 
 ---
 
-# English Tutor AI 🤖 v2.2.0
+# English Tutor AI 🤖 v2.3.0
 
 실시간 문법 교정과 표현 개선을 통해 영어 회화 실력 향상을 도와주는 AI 챗봇입니다.
 
@@ -124,6 +126,7 @@ english-tutor-ai/
 - **v2.0.0**: 음성 대화 모드 및 실시간 음성 인식/합성 추가
 - **v2.1.0**: 음성 설정 기능 - 속도 조절 및 음성 선택 옵션 제공
 - **v2.2.0**: 원클릭 개인 노트 패널 - 중요한 표현과 교정사항 저장 기능
+- **v2.3.0**: 보안 API 프록시 아키텍처 - 서버리스 함수 제거, 정적 호스팅 지원
 
 ## ✨ 주요 기능
 
@@ -166,20 +169,21 @@ english-tutor-ai/
 ├── css/
 │   └── style.css          # 스타일시트
 ├── js/                    # JavaScript 모듈들
+│   ├── api/               # API 클라이언트 모듈 (NEW)
+│   │   ├── ApiProxyClient.js  # 보안 API 키 관리
+│   │   └── GeminiClient.js    # Gemini AI 연동
 │   ├── SpeechManager.js   # 음성 인식/합성 기능
 │   ├── UIManager.js       # UI 컨트롤 기능
 │   ├── MessageManager.js  # 채팅 메시지 처리
+│   ├── TranslationService.js # DeepL 번역 서비스
 │   ├── NoteManager.js     # 개인 노트 관리 시스템
 │   └── EnglishChatbot.js  # 메인 챗봇 클래스
 ├── resource/
 │   └── images/            # 이미지 리소스
-├── netlify/
-│   └── functions/
-│       └── gemini.js      # Netlify 서버리스 함수
+├── test-integration.html  # API 연동 테스트 인터페이스
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml     # GitHub Actions 배포 설정
-├── netlify.toml          # Netlify 설정
 └── package.json          # 프로젝트 정보
 ```
 
@@ -187,10 +191,10 @@ english-tutor-ai/
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Speech APIs**: Web Speech API (SpeechRecognition, SpeechSynthesis)
-- **Backend**: Netlify Functions (Node.js)
-- **AI API**: Google Gemini Pro
-- **Deployment**: GitHub Pages + Netlify
-- **CI/CD**: GitHub Actions
+- **API 연동**: 보안 API 프록시 아키텍처 (api-proxy.ygna.blog)
+- **AI APIs**: Google Gemini 2.0 Flash, DeepL 번역
+- **배포**: 정적 호스팅 호환 (GitHub Pages, Vercel)
+- **보안**: API 키 캐싱, 오리진 검증, 보안 프록시 호출
 
 ## 🎯 사용법
 
