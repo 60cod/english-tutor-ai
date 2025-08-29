@@ -101,29 +101,7 @@ class EnglishChatbot {
     }
     
     async analyzeMessage(message) {
-        let apiUrl;
-        
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            apiUrl = '/.netlify/functions/gemini';
-        } else if (window.location.hostname.includes('netlify.app')) {
-            apiUrl = '/.netlify/functions/gemini';
-        } else {
-            apiUrl = 'https://60-english-tutor-ai.netlify.app/.netlify/functions/gemini';
-        }
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        
-        return await response.json();
+        return await window.geminiClient.analyzeMessageWithRetry(message);
     }
     
     setLoading(isLoading) {

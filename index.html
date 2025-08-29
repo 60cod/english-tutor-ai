@@ -177,8 +177,12 @@
     <!-- Hidden file input for import -->
     <input type="file" id="notes-import-input" accept=".json" style="display: none;">
 
+    <!-- Load API clients first -->
+    <script src="js/api/ApiProxyClient.js"></script>
+    <script src="js/api/GeminiClient.js"></script>
+    
+    <!-- Load other JavaScript files -->
     <script src="js/NoteManager.js"></script>
-
     <script src="js/SpeechManager.js"></script>
     <script src="js/UIManager.js"></script>
     <script src="js/MessageManager.js"></script>

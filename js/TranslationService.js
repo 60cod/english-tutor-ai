@@ -53,18 +53,13 @@ class TranslationService {
             // Apply rate limiting
             await this.rateLimiter.acquire();
 
-            let apiUrl;
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                apiUrl = '/.netlify/functions/deepl-translate';
-            } else if (window.location.hostname.includes('netlify.app')) {
-                apiUrl = '/.netlify/functions/deepl-translate';
-            } else {
-                apiUrl = 'https://60-english-tutor-ai.netlify.app/.netlify/functions/deepl-translate';
-            }
+            // Get API key from proxy
+            const apiKey = await window.apiProxyClient.getApiKey('deepl');
             
-            const response = await fetch(apiUrl, {
+            const response = await fetch('https://api-free.deepl.com/v2/translate', {
                 method: 'POST',
                 headers: {
+                    'Authorization': `DeepL-Auth-Key ${apiKey}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

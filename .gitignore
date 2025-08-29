@@ -16,10 +16,8 @@ workspace.xml
 dist/
 build/
 
-# Netlify (exclude cache and state, but keep functions)
-.netlify/state/
-.netlify/cache/
-.netlify/edge-functions-dist/
+# API proxy cache (if any)
+.api-cache/
 
 # Local development
 .cache/
