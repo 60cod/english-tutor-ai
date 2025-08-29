@@ -7,10 +7,7 @@ class SpeechManager {
         this.speechSupported = this.checkSpeechSupport();
         this.synthesis = window.speechSynthesis;
         this.currentUtterance = null;
-        this.micPermissionGranted = false;
         this.isSpeaking = false;
-        this.speechQueue = [];
-        this.isProcessingSpeech = false;
         this.speechSettings = {
             speed: 1.0,
             voiceURI: 'auto'
@@ -46,7 +43,6 @@ class SpeechManager {
         
         this.recognition.onresult = (event) => {
             const result = event.results[0][0].transcript;
-            console.log('Speech recognition result:', result);
             if (this.onSpeechResult) {
                 this.onSpeechResult(result);
             }
@@ -197,17 +193,8 @@ class SpeechManager {
             utterance.voice = selectedVoice;
         }
         
-        utterance.onstart = () => {
-            this.isProcessingSpeech = true;
-        };
-        
-        utterance.onend = () => {
-            this.isProcessingSpeech = false;
-        };
-        
         utterance.onerror = (event) => {
             console.error('Speech synthesis error:', event.error);
-            this.isProcessingSpeech = false;
         };
         
         this.synthesis.speak(utterance);
@@ -219,8 +206,6 @@ class SpeechManager {
             this.isSpeaking = false;
             this.currentUtterance = null;
         }
-        this.speechQueue = [];
-        this.isProcessingSpeech = false;
     }
     
     updateSpeechSettings(settings) {

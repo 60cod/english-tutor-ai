@@ -27,7 +27,6 @@ class TranslationService {
         const cacheKey = `${cleanText}-${targetLang}`;
         if (this.cache.has(cacheKey)) {
             const cached = this.cache.get(cacheKey);
-            console.log('Translation cache hit:', cleanText.substring(0, 50));
             return cached;
         }
         
@@ -156,37 +155,9 @@ class TranslationService {
                 // Only delete if entry is old enough
                 if (Date.now() - entry.timestamp >= delayMs) {
                     this.cache.delete(cacheKey);
-                    console.log('Cache entry expired:', cacheKey.substring(0, 50));
                 }
             }
         }, delayMs);
-    }
-    
-    // Get cache statistics
-    getCacheStats() {
-        return {
-            size: this.cache.size,
-            keys: Array.from(this.cache.keys()).map(k => k.substring(0, 50))
-        };
-    }
-    
-    // Clear old cache entries
-    clearOldCache(maxAgeMs = 1000 * 60 * 30) { // 30 minutes default
-        const now = Date.now();
-        let cleared = 0;
-        
-        for (const [key, entry] of this.cache.entries()) {
-            if (now - entry.timestamp > maxAgeMs) {
-                this.cache.delete(key);
-                cleared++;
-            }
-        }
-        
-        if (cleared > 0) {
-            console.log(`Cleared ${cleared} old cache entries`);
-        }
-        
-        return cleared;
     }
     
     // Remove emojis from text for efficient translation

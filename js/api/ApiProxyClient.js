@@ -42,7 +42,6 @@ class ApiProxyClient {
                 timestamp: Date.now()
             });
 
-            console.log(`✅ API Key cached for service: ${service}`);
             return data.apiKey;
 
         } catch (error) {

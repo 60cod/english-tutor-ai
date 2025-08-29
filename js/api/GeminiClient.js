@@ -104,7 +104,6 @@ Rules:
                 };
             }
 
-            console.log('✅ Gemini analysis completed via proxy');
             return botResponse;
 
         } catch (error) {

@@ -126,7 +126,7 @@ class EnglishChatbot {
     }
     
     startVoiceMode() {
-        this.uiManager.updateVoiceButtonState(true, this.speechManager.isListening);
+        this.uiManager.updateVoiceButtonState(true);
         
         // Disable text input
         this.userInput.disabled = true;
@@ -138,7 +138,7 @@ class EnglishChatbot {
     }
     
     stopVoiceMode() {
-        this.uiManager.updateVoiceButtonState(false, this.speechManager.isListening);
+        this.uiManager.updateVoiceButtonState(false);
         
         // Enable text input
         this.userInput.disabled = false;

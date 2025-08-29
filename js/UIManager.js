@@ -2,7 +2,6 @@
 class UIManager {
     constructor() {
         this.fontSize = 14;
-        this.hasUserSentMessage = false;
         
         // UI elements
         this.increaseFontBtn = document.getElementById('increase-font');
@@ -130,7 +129,7 @@ class UIManager {
         }
     }
     
-    updateVoiceButtonState(isVoiceMode, isListening) {
+    updateVoiceButtonState(isVoiceMode) {
         if (!this.voiceBtn) return;
         
         if (isVoiceMode) {
