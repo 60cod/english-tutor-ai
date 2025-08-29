@@ -177,25 +177,23 @@ class UIManager {
         }
     }
     
+    /**
+     * UI rendering method that handles voice dropdown population
+     * @param {Array} voices - Array of available voice objects
+     * - Takes voices as a parameter
+     * - Creates the actual HTML option elements
+     * - Handles the visual presentation in the dropdown
+     */
     populateVoiceOptions(voices = []) {
         if (!this.speechVoiceSelect) return;
         
-        const autoOption = this.speechVoiceSelect.querySelector('option[value="auto"]');
         this.speechVoiceSelect.innerHTML = '';
-        if (autoOption) {
-            this.speechVoiceSelect.appendChild(autoOption);
-        } else {
-            const option = document.createElement('option');
-            option.value = 'auto';
-            option.textContent = 'Auto (Default)';
-            option.selected = true;
-            this.speechVoiceSelect.appendChild(option);
-        }
         
         voices.forEach(voice => {
             const option = document.createElement('option');
             option.value = voice.voiceURI;
             option.textContent = `${voice.name} ${voice.lang.includes('en-GB') ? '🇬🇧' : '🇺🇸'}`;
+            
             this.speechVoiceSelect.appendChild(option);
         });
     }

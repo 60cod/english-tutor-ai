@@ -10,7 +10,7 @@ class SpeechManager {
         this.isSpeaking = false;
         this.speechSettings = {
             speed: 1.0,
-            voiceURI: 'auto'
+            voiceURI: null // Will be set to default voice when voices are loaded
         };
         
         this.onSpeechResult = null; // Callback for speech recognition result
@@ -97,23 +97,8 @@ class SpeechManager {
         this.currentUtterance.pitch = 1.0;
         this.currentUtterance.volume = 0.8;
         
-        // Find voice by URI or use default
-        const voices = this.synthesis.getVoices();
-        let selectedVoice = null;
-        
-        if (this.speechSettings.voiceURI !== 'auto') {
-            selectedVoice = voices.find(voice => 
-                voice.voiceURI === this.speechSettings.voiceURI
-            );
-        }
-        
-        // Fallback to any US English voice if specific voice not found
-        if (!selectedVoice) {
-            selectedVoice = voices.find(voice => 
-                voice.lang.includes('en-US')
-            );
-        }
-        
+        // Set voice using centralized voice selection
+        const selectedVoice = this.selectVoice();
         if (selectedVoice) {
             this.currentUtterance.voice = selectedVoice;
         }
@@ -174,21 +159,8 @@ class SpeechManager {
         utterance.pitch = 1.0;
         utterance.volume = 0.8;
         
-        const voices = this.synthesis.getVoices();
-        let selectedVoice = null;
-        
-        if (this.speechSettings.voiceURI !== 'auto') {
-            selectedVoice = voices.find(voice => 
-                voice.voiceURI === this.speechSettings.voiceURI
-            );
-        }
-        
-        if (!selectedVoice) {
-            selectedVoice = voices.find(voice => 
-                voice.lang.includes('en-US')
-            );
-        }
-        
+        // Set voice using centralized voice selection
+        const selectedVoice = this.selectVoice();
         if (selectedVoice) {
             utterance.voice = selectedVoice;
         }
@@ -210,6 +182,34 @@ class SpeechManager {
     
     updateSpeechSettings(settings) {
         this.speechSettings = { ...this.speechSettings, ...settings };
+    }
+    
+    selectVoice() {
+        const voices = this.synthesis.getVoices();
+        let selectedVoice = null;
+        
+        if (this.speechSettings.voiceURI) {
+            selectedVoice = voices.find(voice => 
+                voice.voiceURI === this.speechSettings.voiceURI
+            );
+        }
+        
+        // Fallback to Google US English, then any US English voice if specific voice not found
+        if (!selectedVoice) {
+            // First priority: Google US English
+            selectedVoice = voices.find(voice => 
+                voice.name.includes('Google US English')
+            );
+            
+            // Second priority: any US English voice
+            if (!selectedVoice) {
+                selectedVoice = voices.find(voice => 
+                    voice.lang.includes('en-US')
+                );
+            }
+        }
+        
+        return selectedVoice;
     }
     
     getAvailableVoices() {

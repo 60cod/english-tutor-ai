@@ -19,11 +19,14 @@ class EnglishChatbot {
         // Setup callbacks
         this.setupCallbacks();
         
+        // Load saved speech settings
+        this.loadSpeechSettings();
+        
         // Initialize features
         this.initEventListeners();
         this.speechManager.initSpeechRecognition();
         this.uiManager.initSpeechSettings(this.speechManager.speechSettings);
-        this.populateVoiceOptions();
+        this.initializeVoiceSettings();
     }
     
     setupCallbacks() {
@@ -37,7 +40,7 @@ class EnglishChatbot {
             this.speechManager.updateSpeechSettings(settings);
             this.saveSpeechSettings();
         };
-        this.uiManager.onVoicesChanged = () => this.populateVoiceOptions();
+        this.uiManager.onVoicesChanged = () => this.initializeVoiceSettings();
         
         // Message manager callbacks
         this.messageManager.onReadMessage = (text, element) => this.handleReadMessage(text, element);
@@ -233,24 +236,53 @@ class EnglishChatbot {
         }
     }
     
+    loadSpeechSettings() {
+        try {
+            const saved = localStorage.getItem('speechSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                this.speechManager.updateSpeechSettings(settings);
+            }
+        } catch (error) {
+            console.warn('Failed to load speech settings:', error);
+        }
+    }
+    
     saveSpeechSettings() {
         localStorage.setItem('speechSettings', JSON.stringify(this.speechManager.speechSettings));
     }
     
-    populateVoiceOptions() {
+    /**
+     * Coordinator method that handles voice settings initialization
+     * - Gets available voices from SpeechManager
+     * - Calls UIManager to populate the dropdown
+     * - Sets the default voice if none is selected
+     * - Handles the business logic of voice initialization
+     */
+    initializeVoiceSettings() {
         const voices = this.speechManager.getAvailableVoices();
         this.uiManager.populateVoiceOptions(voices);
+        
+        // Set default voice if not already set
+        if (!this.speechManager.speechSettings.voiceURI) {
+            const googleUSVoice = voices.find(voice => 
+                voice.name.includes('Google US English')
+            );
+            const firstUSVoice = voices.find(voice => 
+                voice.lang.includes('en-US')
+            );
+            
+            const defaultVoice = googleUSVoice || firstUSVoice;
+            if (defaultVoice) {
+                this.speechManager.updateSpeechSettings({ voiceURI: defaultVoice.voiceURI });
+                this.uiManager.initSpeechSettings(this.speechManager.speechSettings);
+            }
+        }
     }
     
     showTooltip(element, text, position = 'top') {
         if (this.guideManager) {
             this.guideManager.showTooltip(element, text, position);
-        }
-    }
-    
-    hideTooltip() {
-        if (this.guideManager) {
-            this.guideManager.hideTooltip();
         }
     }
 }
