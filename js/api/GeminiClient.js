@@ -69,10 +69,11 @@ Rules:
                 ]
             };
 
-            const response = await fetch(`${this.apiUrl}?key=${apiKey}`, {
+            const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
                 },
                 body: JSON.stringify(requestBody)
             });
